@@ -58,7 +58,11 @@ rindex(data,a,l,p)
 ## 4. Credits
 `hydRopclim` was developed by Pedro Rau, for any issue or suggestion please write to: pedro.rau.ing@gmail.com
 
-## 5. References:
+## 5. How to cite?
+
+Rau, P. 2021. hydRopclim: An R package for easy hydroclimatic calculations, GitHub repository, https://github.com/hydrocodes/hydRopclim
+
+## 6. References:
 
 Bourrel L, Rau P, Dewitte B, Labat D, Lavado W, Coutaud A, Vera A, Alvarado A, Ordoñez J, 2015. Low-frequency modulation and trend 
 of the relationship between precipitation and ENSO along the Northern to Center Peruvian Pacific coast. Hydrological Processes. 29(6):1252-1266.
