@@ -1,0 +1,82 @@
+# hydRopclim: An R package for easy hydroclimatic calculations
+
+## 1. What is hydRopclim?
+`hydRopclim` is an R package for automatizing hydroclimatic calculations. `hydRopclim` seeks to motivate the use of non-expert R users in the hydroclimatological field. 
+Some results and interpretations require a supervised opinion before drawing conclusions.
+
+## 2. What hydRopclim does?
+Six main functions are implemented in `hydRopclim`. Their applications cover the topics of deterministic hydroclimatology and watershed hydrology
+with a focus over the Peruvian Andes and Pacific slope and coast, however they can be applied to any similar geographical context under a critical hydrological criterion. 
+
+The main functions are:
+- `pgridcorr()`: Correction of monthly grid-point precipitation, e.g., TRMM (Tropical Rainfall Measuring Mission) or others gridded products in function
+of an in-situ station (Condom, Rau & Espinoza, 2011).
+- `tgridcorr()`: Correction of monthly grid-point mean temperature at target elevations, e.g., NCEP NCAR or others reanalysis products in function of an in-situ station (Rau, Condom & Lavado, 2013).
+- `indexcorrl()`: Estimation of hydroclimatic seasonal indexes, and their running correlations, e.g., ENSO index versus precipitation (Bourrel, Rau, Labat et al, 2015). Also, it contains 4 complementary functions.
+  - `seasavg()`, `seasavg2()` and `seassum()`: Calculation of seasonal average vector index for a season of n-months; seasonal average and sum matrix indexes for a season of n-months from m-hydroclimatic variables, respectively.
+  - `zscorem()`: Transformation of m-hydroclimatic monthly variables into m-zscores indexes over 12-months each one.
+- `hydrocluster()`: K-means clustering of a hydroclimatic time series, e.g., precipitation, streamflow, and evaluation by silhouette (Rau, Bourrel, Labat et al, 2017).
+- `hydrochange()`: Hydroclimatic change analysis at annual time step for a database that includes mean temperature. Estimation of potential evapotranspiration by Oudin method,
+simulation of actual evapotranspiration by Budyko-Zhang model, quantifying impacts of climate and human activities on runoff change and quantifying watershed sensitivity and
+adaptation (Rau, Bourrel, Labat et al, 2018).
+  - `hydrochange2()`: Hydroclimatic change analysis at annual time step for a database that includes potential evapotranspiration. Simulation of actual evapotranspiration by
+  Budyko-Zhang model, quantifying impacts of climate and human activities on runoff change and quantifying watershed sensitivity and adaptation (Rau, Bourrel, Labat et al, 2018).
+- `rindex()`: Estimation of a monthly runoff index in an ungauged watershed through GR2M model and geomorphometric parameters (Rau, Bourrel, Labat et al, 2019).
+
+
+## 3. How to install hydRopclim?
+The `hydRopclim` package must be installed from Github hydrocodes repository, following the next 2 steps.
+
+**Step 1**: In Rstudio, install `devtools` package from CRAN
+
+**Step 2**: In Rstudio console or on your script, please write 
+
+```r
+devtools::install_github(c("hydrocodes/hydRopclim"))
+```
+or also :
+
+```r
+library(devtools)
+install_github("hydrocodes/hydRopclim")
+```
+During the installation, please check in R console and skip other updates with an empty line or selecting option 3.
+
+That’s all! Finally, do not forget call the package in your script and if is necessary install and call other packages required in some functions. 
+Here a list of `hydRopclim` functions that work fine with the next packages:
+- For `indexcorrl()`: `reshape2`, `ggplot2`, `wesanderson`, `cowplot`
+- For `hydrocluster()`: `stats`, `cluster`, `sp`, `rgdal`
+- For `rindex()`: `ggplot2`
+
+Example: `rindex()` requires ggplot2 package for plotting runoff index superavit and deficit time series:
+```r
+library(hydRopclim)
+library(ggplot2)
+rindex(data,a,l,p)
+```
+
+## 4. Credits
+`hydRopclim` was developed by Pedro Rau, for any issue or suggestion please write to: pedro.rau.ing@gmail.com
+
+## 5. References:
+
+Bourrel L, Rau P, Dewitte B, Labat D, Lavado W, Coutaud A, Vera A, Alvarado A, Ordoñez J, 2015. Low-frequency modulation and trend 
+of the relationship between precipitation and ENSO along the Northern to Center Peruvian Pacific coast. Hydrological Processes. 29(6):1252-1266.
+http://dx.doi.org/10.1002/hyp.10247
+
+Condom T, Rau P, Espinoza JC, 2011. Correction of TRMM 3B43 monthly precipitation data over the mountainous areas of Peru during the period 1998-2007.
+Hydrological Processes. 25(12):1924-1933. http://dx.doi.org/10.1002/hyp.7949
+
+Rau P, Condom T, Lavado, W. 2013. Spatio-temporal analysis of monthly temperature in the mountainous regions of Peru. An approach for NCEP NCAR Reanalysis data correction.
+Proceedings of the 35th IAHR World Congress. 12:10602-10612. https://doi.org/10.13140/2.1.4591.9522
+
+Rau P, Bourrel L, Labat D, Melo P, Dewitte B, Frappart F, Lavado W, Felipe O, 2017. Regionalization of rainfall over the Peruvian Pacific slope and coast.
+International Journal of Climatology 37(1):143-158. http://dx.doi.org/10.1002/joc.4693
+
+Rau P, Bourrel L, Labat D, Frappart F, Ruelland D, Lavado W, Dewitte B, Felipe O, 2018. Hydroclimatic change disparity of Peruvian Pacific drainage catchments.
+Theoretical and Applied Climatology. 134(1-2):139-153. http://dx.doi.org/10.1007/s00704-017-2263-x
+
+Rau P, Bourrel L, Labat D, Ruelland D, Frappart F, Lavado W, Dewitte B, Felipe O, 2019. Assessing multi-decadal runoff (1970‒2010) using regional hydrological modelling
+under data and water scarcity conditions in Peruvian Pacific catchments. Hydrological Processes. 33(1):20-35. 
+https://doi.org/10.1002/hyp.13318
+
