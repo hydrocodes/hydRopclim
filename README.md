@@ -1,7 +1,7 @@
 # hydRopclim: An R package for easy hydroclimatic calculations
 
 ## 1. What is hydRopclim?
-`hydRopclim` is an R package for automatizing hydroclimatic calculations. `hydRopclim` seeks to motivate the use of non-expert R users in the hydroclimatological field. 
+`hydRopclim` is an R package for automatizing hydroclimatic calculations. `hydRopclim` seeks to helping non-expert R users in the hydroclimatological field. 
 Some results and interpretations require a supervised opinion before drawing conclusions.
 
 ## 2. What hydRopclim does?
@@ -9,8 +9,7 @@ Six main functions are implemented in `hydRopclim`. Their applications cover the
 with a focus over the Peruvian Andes and Pacific slope and coast, however they can be applied to any similar geographical context under a critical hydrological criterion. 
 
 The main functions are:
-- `pgridcorr()`: Correction of monthly grid-point precipitation, e.g., TRMM (Tropical Rainfall Measuring Mission) or others gridded products in function
-of an in-situ station (Condom, Rau & Espinoza, 2011).
+- `pgridcorr()`: Correction of monthly grid-point precipitation, e.g., TRMM (Tropical Rainfall Measuring Mission) (Condom, Rau & Espinoza, 2011) or others gridded products in function of an in-situ station .
 - `tgridcorr()`: Correction of monthly grid-point mean temperature at target elevations, e.g., NCEP NCAR or others reanalysis products in function of an in-situ station (Rau, Condom & Lavado, 2013).
 - `indexcorrl()`: Estimation of hydroclimatic seasonal indexes, and their running correlations, e.g., ENSO index versus precipitation (Bourrel, Rau, Labat et al, 2015). Also, it contains 4 complementary functions.
   - `seasavg()`, `seasavg2()` and `seassum()`: Calculation of seasonal average vector index for a season of n-months; seasonal average and sum matrix indexes for a season of n-months from m-hydroclimatic variables, respectively.
