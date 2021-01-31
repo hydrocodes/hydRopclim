@@ -58,32 +58,48 @@ rindex(data,a,l,p)
 ## 4. Credits
 `hydRopclim` was developed by Pedro Rau, for any issue or suggestion please write to: pedro.rau.ing@gmail.com
 
+`hydRopclim` could be not possible without runnning the next softwares and packages: R (R Core Team, 2020), Rstudio (RStudio Team, 2020), stats (R Core Team, 2020), cluster (Maechler et al, 2019), sp (Bivand et al, 2013), rgdal (Bivand et al, 2015), ggplot2 (Wickham, 2016), reshape2 (Wickham, 2007), wesanderson (Ram et al, 2018), cowplot (Wilke, 2020).
+
+`hydRopclim` allows to reproduce some base figures shown in Rau (2017)
+
 ## 5. Versions
 v 1.0 - January 30, 2021
 
 ## 6. How to cite?
 
-Rau, P. 2021. hydRopclim: An R package for easy hydroclimatic calculations, GitHub repository, https://github.com/hydrocodes/hydRopclim
+Rau, P. 2021. hydRopclim: An R package for easy hydroclimatic calculations. figshare. Software. https://doi.org/10.6084/m9.figshare.13670191, 
+GitHub repository: https://github.com/hydrocodes/hydRopclim
 
 ## 7. References:
 
-Bourrel L, Rau P, Dewitte B, Labat D, Lavado W, Coutaud A, Vera A, Alvarado A, Ordoñez J, 2015. Low-frequency modulation and trend 
-of the relationship between precipitation and ENSO along the Northern to Center Peruvian Pacific coast. Hydrological Processes. 29(6):1252-1266.
-http://dx.doi.org/10.1002/hyp.10247
+Bivand RS, Pebesma E, Gomez-Rubio V, 2015. Applied spatial data analysis with R, Second edition. Springer, NY. https://asdar-book.org/
 
-Condom T, Rau P, Espinoza JC, 2011. Correction of TRMM 3B43 monthly precipitation data over the mountainous areas of Peru during the period 1998-2007.
-Hydrological Processes. 25(12):1924-1933. http://dx.doi.org/10.1002/hyp.7949
+Bivand RS, Keitt T, Rowlingson B, 2015. rgdal: Bindings for the Geospatial Data Abstraction Library. R package version 1.0–4. http://CRAN.R-project.org/package=rgdal
 
-Rau P, Condom T, Lavado, W. 2013. Spatio-temporal analysis of monthly temperature in the mountainous regions of Peru. An approach for NCEP NCAR Reanalysis data correction.
-Proceedings of the 35th IAHR World Congress. 12:10602-10612. https://doi.org/10.13140/2.1.4591.9522
+Bourrel L, Rau P, Dewitte B, Labat D, Lavado W, Coutaud A, Vera A, Alvarado A, Ordoñez J, 2015. Low-frequency modulation and trend of the relationship between precipitation and ENSO along the Northern to Center Peruvian Pacific coast. Hydrological Processes. 29(6):1252-1266. http://dx.doi.org/10.1002/hyp.10247
 
-Rau P, Bourrel L, Labat D, Melo P, Dewitte B, Frappart F, Lavado W, Felipe O, 2017. Regionalization of rainfall over the Peruvian Pacific slope and coast.
-International Journal of Climatology 37(1):143-158. http://dx.doi.org/10.1002/joc.4693
+Condom T, Rau P, Espinoza JC, 2011. Correction of TRMM 3B43 monthly precipitation data over the mountainous areas of Peru during the period 1998-2007. Hydrological Processes. 25(12):1924-1933. http://dx.doi.org/10.1002/hyp.7949
 
-Rau P, Bourrel L, Labat D, Frappart F, Ruelland D, Lavado W, Dewitte B, Felipe O, 2018. Hydroclimatic change disparity of Peruvian Pacific drainage catchments.
-Theoretical and Applied Climatology. 134(1-2):139-153. http://dx.doi.org/10.1007/s00704-017-2263-x
+Maechler, M., Rousseeuw, P., Struyf, A., Hubert, M., Hornik, K.(2019). cluster: Cluster Analysis Basics and Extensions. R package version 2.1.0. https://cran.r-project.org/web/packages/cluster/index.html
 
-Rau P, Bourrel L, Labat D, Ruelland D, Frappart F, Lavado W, Dewitte B, Felipe O, 2019. Assessing multi-decadal runoff (1970‒2010) using regional hydrological modelling
-under data and water scarcity conditions in Peruvian Pacific catchments. Hydrological Processes. 33(1):20-35. 
-https://doi.org/10.1002/hyp.13318
+R Core Team, 2020. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/
 
+Ram K, Wickham H , Richards C, Baggett A, 2018. A Wes Anderson Palette Generator. https://cran.r-project.org/web/packages/wesanderson/index.html
+
+Rau P, Condom T, Lavado, W. 2013. Spatio-temporal analysis of monthly temperature in the mountainous regions of Peru. An approach for NCEP NCAR Reanalysis data correction. Proceedings of the 35th IAHR World Congress. 12:10602-10612. https://doi.org/10.13140/2.1.4591.9522
+
+Rau P, Bourrel L, Labat D, Melo P, Dewitte B, Frappart F, Lavado W, Felipe O, 2017. Regionalization of rainfall over the Peruvian Pacific slope and coast. International Journal of Climatology 37(1):143-158. http://dx.doi.org/10.1002/joc.4693
+
+Rau P. 2017. Precipitation, runoff and water balance regimes variability along the Peruvian Pacific slope and coast: ENSO influence and sensitivity to hydroclimatic change (PhD thesis). Université Toulouse III Paul Sabatier. France 267pp, tel-01627597. https://tel.archives-ouvertes.fr/tel-01627597
+
+Rau P, Bourrel L, Labat D, Frappart F, Ruelland D, Lavado W, Dewitte B, Felipe O, 2018. Hydroclimatic change disparity of Peruvian Pacific drainage catchments. Theoretical and Applied Climatology. 134(1-2):139-153. http://dx.doi.org/10.1007/s00704-017-2263-x
+
+Rau P, Bourrel L, Labat D, Ruelland D, Frappart F, Lavado W, Dewitte B, Felipe O, 2019. Assessing multi-decadal runoff (1970‒2010) using regional hydrological modelling under data and water scarcity conditions in Peruvian Pacific catchments. Hydrological Processes. 33(1):20-35. https://doi.org/10.1002/hyp.13318
+
+RStudio Team (2020). RStudio: Integrated Development for R. RStudio, PBC, Boston, MA URL http://www.rstudio.com/
+
+Wickham H (2007). “Reshaping Data with the reshape Package.” Journal of Statistical Software, 21(12), 1–20. http://www.jstatsoft.org/v21/i12/
+
+Wickham H (2016). ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York. ISBN 978-3-319-24277-4, https://ggplot2.tidyverse.org
+
+Wilke, 2020. cowplot: Streamlined Plot Theme and Plot Annotations for 'ggplot2'. https://cran.r-project.org/web/packages/cowplot/index.html
