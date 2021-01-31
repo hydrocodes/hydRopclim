@@ -4,7 +4,7 @@
 `hydRopclim` is an R package for automatizing hydroclimatic calculations. `hydRopclim` seeks to helping non-expert R users in the hydroclimatological field. 
 Some results and interpretations require a supervised opinion before drawing conclusions.
 
-## 2. What hydRopclim does?
+## 2. What is hydRopclim for?
 Six main functions are implemented in `hydRopclim`. Their applications cover the topics of deterministic hydroclimatology and watershed hydrology
 with a focus over the Peruvian Andes and Pacific slope and coast, however they can be applied to any similar geographical context under a critical hydrological criterion. 
 
