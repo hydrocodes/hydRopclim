@@ -40,7 +40,7 @@ or also :
 library(devtools)
 install_github("hydrocodes/hydRopclim")
 ```
-During the installation, please check in R console and skip other updates with an empty line or selecting option 3.
+During the installation, please check in R console and skip other updates with an empty line or selecting option "None".
 
 That’s all! Finally, do not forget call the package in your script and if is necessary install and call other packages required in some functions. 
 Here a list of `hydRopclim` functions that work fine with the next packages:
@@ -60,7 +60,7 @@ rindex(data,a,l,p)
 
 `hydRopclim` could be not possible without runnning the next softwares and packages: R (R Core Team, 2020), Rstudio (RStudio Team, 2020), stats (R Core Team, 2020), cluster (Maechler et al, 2019), sp (Bivand et al, 2013), rgdal (Bivand et al, 2015), ggplot2 (Wickham, 2016), reshape2 (Wickham, 2007), wesanderson (Ram et al, 2018), cowplot (Wilke, 2020).
 
-`hydRopclim` allows to reproduce some base figures shown in Rau (2017)
+`hydRopclim` allows to reproduce some base figures shown in Rau (2017).
 
 ## 5. Versions
 v 1.0 - January 30, 2021
