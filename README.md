@@ -14,7 +14,7 @@ The main functions are:
 - `indexcorrl()`: Estimation of hydroclimatic seasonal indexes, and their running correlations, e.g., ENSO index versus precipitation (Bourrel, Rau, Labat et al, 2015). Also, it contains 4 complementary functions.
   - `seasavg()`, `seasavg2()` and `seassum()`: Calculation of seasonal average vector index for a season of n-months; seasonal average and sum matrix indexes for a season of n-months from m-hydroclimatic variables, respectively.
   - `zscorem()`: Transformation of m-hydroclimatic monthly variables into m-zscores indexes over 12-months each one.
-- `hydrocluster()`: K-means clustering of a hydroclimatic time series, e.g., precipitation, streamflow, and evaluation by silhouette (Rau, Bourrel, Labat et al, 2017).
+- `hydrocluster()`: K-means clustering of a hydroclimatic time series, e.g., precipitation, streamflow; spatial visualization and evaluation by "silhouettes" (Rau, Bourrel, Labat et al, 2017).
 - `hydrochange()`: Hydroclimatic change analysis at annual time step for a database that includes mean temperature. Estimation of potential evapotranspiration by Oudin method,
 simulation of actual evapotranspiration by Budyko-Zhang model, quantifying impacts of climate and human activities on runoff change and quantifying watershed sensitivity and
 adaptation (Rau, Bourrel, Labat et al, 2018).
