@@ -53,6 +53,8 @@ library(hydRopclim)
 library(ggplot2)
 rindex(data,a,l,p)
 ```
+Please, check tutorial folder for codelines examples and more details:
+https://github.com/hydrocodes/hydRopclim/tree/main/tutorial
 
 ## 4. Credits
 `hydRopclim` was developed by Pedro Rau and allows to reproduce some base figures shown in Rau (2017). For any issue or suggestion please write to: pedro.rau.ing@gmail.com
