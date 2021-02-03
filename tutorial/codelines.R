@@ -1,5 +1,4 @@
-rm(list=ls())
-dev.off()
+# Recommended code lines for running well hydRopclim functions
 # Change the input and output path and files C:/.../
 
 library(hydRopclim)
@@ -28,8 +27,8 @@ rwin <- 11 #insert the sliding window in years
 output1 <- "C:/.../indexes.csv"
 output2 <- "C:/.../runcorr.csv"
 output3 <- "C:/.../runcorr_format.csv"
-p1 <- seasavg(p=index,start=9,win=6)
-p2 <- seassum(p=variables,start=9,win=12)
+p1 <- seasavg(p=index, start=9, win=6) # e.g.SONDJF
+p2 <- seassum(p=variables, start=9, win=8) #e.g. SONDJFMA
 indexcorrl(index.seas=p1, variable.seas=p2, rwin=11)
 
 library(stats)
