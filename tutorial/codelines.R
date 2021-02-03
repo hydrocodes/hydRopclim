@@ -1,4 +1,4 @@
-# Recommended code lines for running well hydRopclim functions
+# Suggested code lines for running hydRopclim functions
 # Change the input and output path and files C:/.../
 
 library(hydRopclim)
