@@ -58,7 +58,7 @@ Please, check tutorial folder for codelines examples and more details:
 https://github.com/hydrocodes/hydRopclim/tree/main/tutorial
 
 ## 4. Credits
-`hydRopclim` was developed by Pedro Rau and allows to reproduce some base figures shown in Rau (2017). For any issue or suggestion please write to: pedro.rau.ing@gmail.com
+`hydRopclim` was developed by Pedro Rau. For any issue or suggestion please write to: pedro.rau.ing@gmail.com
 
 `hydRopclim` could be not possible without runnning the next softwares and packages: R (R Core Team, 2020), Rstudio (RStudio Team, 2020), stats (R Core Team, 2020), cluster (Maechler et al, 2019), sp (Bivand et al, 2013), rgdal (Bivand et al, 2015), ggplot2 (Wickham, 2016), reshape2 (Wickham, 2007), wesanderson (Ram et al, 2018), cowplot (Wilke, 2020).
 
@@ -69,8 +69,7 @@ v 1.0 - January 30, 2021
 
 ## 6. How to cite?
 
-Rau, P. 2021. hydRopclim: An R package for easy hydroclimatic calculations. figshare. Software. https://doi.org/10.6084/m9.figshare.13670191, 
-GitHub repository: https://github.com/hydrocodes/hydRopclim
+Rau, P. 2021. hydRopclim: An R package for easy hydroclimatic calculations. GitHub repository: https://github.com/hydrocodes/hydRopclim
 
 ## 7. References:
 
@@ -91,8 +90,6 @@ Ram K, Wickham H , Richards C, Baggett A, 2018. A Wes Anderson Palette Generator
 Rau P, Condom T, Lavado, W. 2013. Spatio-temporal analysis of monthly temperature in the mountainous regions of Peru. An approach for NCEP NCAR Reanalysis data correction. Proceedings of the 35th IAHR World Congress. 12:10602-10612. https://doi.org/10.13140/2.1.4591.9522
 
 Rau P, Bourrel L, Labat D, Melo P, Dewitte B, Frappart F, Lavado W, Felipe O, 2017. Regionalization of rainfall over the Peruvian Pacific slope and coast. International Journal of Climatology 37(1):143-158. http://dx.doi.org/10.1002/joc.4693
-
-Rau P. 2017. Precipitation, runoff and water balance regimes variability along the Peruvian Pacific slope and coast: ENSO influence and sensitivity to hydroclimatic change (PhD thesis). Université Toulouse III Paul Sabatier. France 267pp, tel-01627597. https://tel.archives-ouvertes.fr/tel-01627597
 
 Rau P, Bourrel L, Labat D, Frappart F, Ruelland D, Lavado W, Dewitte B, Felipe O, 2018. Hydroclimatic change disparity of Peruvian Pacific drainage catchments. Theoretical and Applied Climatology. 134(1-2):139-153. http://dx.doi.org/10.1007/s00704-017-2263-x
 
