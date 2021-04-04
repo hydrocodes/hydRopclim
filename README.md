@@ -2,7 +2,7 @@
 <img src="https://github.com/hydrocodes/hydRopclim/blob/main/tutorial/logo.png" width="200">
 
 ## 1. What is hydRopclim?
-`hydRopclim` is an R package for automatizing hydroclimatic calculations. `hydRopclim` seeks to helping non-expert R users in the hydroclimatological field. 
+`hydRopclim` is an R package for automating hydroclimatic calculations. `hydRopclim` seeks to helping non-expert R users in the hydroclimatological field. 
 Some results and interpretations require a supervised opinion before drawing conclusions.
 
 ## 2. What is hydRopclim for?
