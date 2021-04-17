@@ -2,12 +2,12 @@
 # Change the input and output path and files C:/.../
 
 library(hydRopclim)
-database1 <- read.csv("C:/.../data.csv",header=TRUE, check.names = F, stringsAsFactors = F)
+database1 <- read.csv("C:/.../data.csv")
 output <- "C:/.../output.csv"
 pgridcorr(data=database1)
 
 library(hydRopclim)
-database2 <- read.csv("C:/.../data.csv",header=TRUE, check.names = F, stringsAsFactors = F)
+database2 <- read.csv("C:/.../data.csv")
 hBS = 2479 #Station in masl
 hNNR = 3012 #Grid.level in masl
 hx = 2000 #The location to correct in masl
@@ -20,7 +20,7 @@ library(ggplot2)
 library(wesanderson)
 library(cowplot)
 library(hydRopclim)
-data <- read.csv("C:/.../data.csv",header=TRUE, check.names = F, stringsAsFactors = F)
+data <- read.csv("C:/.../data.csv")
 index <- data$Index
 variables <- data[ ,3:ncol(data)]
 rwin <- 11 #insert the sliding window in years
@@ -36,21 +36,21 @@ library(cluster)
 library(sp)
 library(rgdal)
 library(hydRopclim)
-database4 <- read.csv("C:/.../data.csv", header = T, check.names = F, stringsAsFactors = F)
+database4 <- read.csv("C:/.../data.csv")
 region <- readOGR("C:/.../region.shp")
 n <- 3
 output <- "C:/.../output_test.csv"
 hydrocluster(file=database4, shp=region, clusters=n)
 
 library(hydRopclim)
-database5 <- read.csv("C:/.../data.csv",header=TRUE, check.names = F, stringsAsFactors = F)
+database5 <- read.csv("C:/.../data.csv")
 output <- "C:/.../output.csv"
 lat <- -5.11 # Enter basin latitude
 hydrochange(data=database5, lat)
 
 library(hydRopclim)
 library(ggplot2)
-database7 <- read.csv("C:/.../data.csv",header=TRUE, check.names = F, stringsAsFactors = F)
+database7 <- read.csv("C:/.../data.csv")
 a <-2352   #Area in km2
 l <- 88.3  #Main channel lenght in km
 p <- 261   #Perimeter in km
