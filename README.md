@@ -64,7 +64,9 @@ https://github.com/hydrocodes/hydRopclim/tree/main/tutorial
 
 ## 5. Versions
 v 1.2 - April 17, 2021 (date format extended)
+
 v 1.1 - February 11, 2021 (rindex function improvements)
+
 v 1.0 - January 30, 2021
 
 ## 6. How to cite?
