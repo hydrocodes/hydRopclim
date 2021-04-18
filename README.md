@@ -32,7 +32,7 @@ The `hydRopclim` package must be installed from Github hydrocodes repository, fo
 **Step 2**: In Rstudio console or on your script, please write 
 
 ```r
-devtools::install_github(c("hydrocodes/hydRopclim"))
+devtools::install_github("hydrocodes/hydRopclim")
 ```
 or also :
 
