@@ -165,16 +165,16 @@ reord <- reord[reord$value!=0,]
 pal <- wes_palette("Zissou1", type = "continuous")
 p1 <- ggplot(reord, aes(x=factor(Var1), y=Var2, fill = value))+
   geom_tile()+
-  scale_fill_gradientn(colours = pal, name = "r")
+  scale_fill_gradientn(colours = pal, name = "r") +
   scale_x_discrete(expand = c(0, 0)) +
   scale_y_discrete(expand = c(0, 0)) +
   theme(axis.title.x=element_blank(),
         axis.title.y=element_blank(),
         axis.text.x = element_text(angle=90))
-p2 <- ggplot(df, aes(x=X1.ncol.rcorr., y= rev.slope.))+
-  theme_light()+ geom_line()+geom_point()+
-  labs(y = "Linear trend slope")+
-  scale_x_discrete(breaks=c(1:ncol(rcorr)))+
+p2 <- ggplot(df, aes(x=X1.ncol.rcorr., y= rev.slope.)) +
+  theme_light()+ geom_line()+geom_point() +
+  labs(y = "Linear trend slope") +
+  scale_x_discrete(breaks=c(1:ncol(rcorr))) +
   theme(axis.title.y=element_blank())+ coord_flip()
 p3 <- plot_grid(p1, p2, ncol=2, rel_widths = c(5,1))
 idx <- merge(index.seas, variable.seas, by = 0, sort=F, all=T)
