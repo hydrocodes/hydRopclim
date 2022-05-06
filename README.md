@@ -34,12 +34,6 @@ The `hydRopclim` package must be installed from Github hydrocodes repository, fo
 ```r
 devtools::install_github("hydrocodes/hydRopclim")
 ```
-or also :
-
-```r
-library(devtools)
-install_github("hydrocodes/hydRopclim")
-```
 During the installation, please check in R console and skip other updates with an empty line or selecting option "None".
 
 That’s all! Finally, do not forget call the package in your script and if is necessary install and call other packages required in some functions. 
