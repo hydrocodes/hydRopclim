@@ -57,6 +57,8 @@ https://github.com/hydrocodes/hydRopclim/tree/main/tutorial
 `hydRopclim` could be not possible without runnning the next softwares and packages: R (R Core Team, 2020), Rstudio (RStudio Team, 2020), stats (R Core Team, 2020), cluster (Maechler et al, 2019), sp (Bivand et al, 2013), rgdal (Bivand et al, 2015), ggplot2 (Wickham, 2016), reshape2 (Wickham, 2007), wesanderson (Ram et al, 2018), cowplot (Wilke, 2020).
 
 ## 5. Versions
+v 1.2.1 - November 19, 2022 (indexcorrl function improvements)
+
 v 1.2 - April 17, 2021 (date format extended)
 
 v 1.1 - February 11, 2021 (rindex function improvements)
