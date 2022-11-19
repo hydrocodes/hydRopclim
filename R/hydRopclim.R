@@ -136,8 +136,15 @@ tgridcorr <- function(data,hBS,hNNR,hx,LR)
 #' @examples indexcorrl(index.seas,variable.seas,rwin)
 #' @export
 indexcorrl <- function(index.seas, variable.seas, rwin)
-{rcorr <- matrix(NA,(nrow(variable.seas)-rwin),ncol(variable.seas))
-for (i in 1:(nrow(variable.seas)-rwin)) {
+{ ptr <- length(index.seas)
+  ptnd <- nrow(variable.seas)
+  if(ptr>ptnd){
+    index.seas <- index.seas[-ptr]
+  } else if(ptr<ptnd){
+      variable.seas <- variable.seas[-1,]
+  }
+ rcorr <- matrix(NA,(nrow(variable.seas)-rwin),ncol(variable.seas))
+ for (i in 1:(nrow(variable.seas)-rwin)) {
   rcorr[i,] <- cor(variable.seas[i:(i+rwin-1),],index.seas[i:(i+rwin-1)])
 }
 # Formatting new yearly dates
