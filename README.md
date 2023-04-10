@@ -67,7 +67,7 @@ v 1.0 - January 30, 2021
 
 ## 6. How to cite?
 
-Rau P, Castillon F, Bourrel L. 2022. A tool in R for easy hydroclimatic calculations. Advances in Science, Technology and Innovation (in press)
+Rau P, Castillon F, Bourrel L. 2023. A tool in R for easy hydroclimatic calculations. Advances in Science, Technology and Innovation (in press)
 
 ## 7. References:
 
