@@ -27,12 +27,12 @@ adaptation (Rau, Bourrel, Labat et al, 2018).
 ## 3. How to install hydRopclim?
 The `hydRopclim` package must be installed from Github hydrocodes repository, following the next 2 steps.
 
-**Step 1**: In Rstudio, install `devtools` package from CRAN
+**Step 1**: In Rstudio, install `remotes` package from CRAN
 
 **Step 2**: In Rstudio console or on your script, please write 
 
 ```r
-devtools::install_github("hydrocodes/hydRopclim")
+remotes::install_github("hydrocodes/hydRopclim")
 ```
 During the installation, please check in R console and skip other updates with an empty line or selecting option "None".
 
