@@ -322,7 +322,7 @@ group <- as.factor(bdd$km.cluster)
 d <- data.frame(lon=bdd$long, lat=bdd$lat)
 sp::coordinates(d) <- c("lon", "lat")
 sp::proj4string(d) <- sp::CRS('+proj=longlat +datum=WGS84')
-shpgeo <- sp::spTransform(shp, CRS('+proj=longlat +datum=WGS84'))
+shpgeo <- project(shp, CRS('+proj=longlat +datum=WGS84'))
 
 # Plot of location map and silhouette
 par(mfrow=c(1,2))
