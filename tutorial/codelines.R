@@ -31,13 +31,12 @@ p1 <- seasavg(p=index, start=9, win=6) # e.g.SONDJF
 p2 <- seassum(p=variables, start=9, win=8) #e.g. SONDJFMA
 indexcorrl(index.seas=p1, variable.seas=p2, rwin=11)
 
-library(stats)
 library(cluster)
 library(sp)
-library(rgdal)
+library(terra)
 library(hydRopclim)
 database4 <- read.csv("C:/.../data.csv")
-region <- readOGR("C:/.../region.shp")
+region <- vect("C:/.../region.shp")
 n <- 3
 output <- "C:/.../output_test.csv"
 hydrocluster(file=database4, shp=region, clusters=n)
