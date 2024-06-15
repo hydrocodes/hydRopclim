@@ -39,7 +39,7 @@ During the installation, please check in R console and skip other updates with a
 That’s all! Finally, do not forget call the package in your script and if is necessary install and call other packages required in some functions. 
 Here a list of `hydRopclim` functions that work fine with the next packages:
 - For `indexcorrl()`: `reshape2`, `ggplot2`, `wesanderson`, `cowplot`
-- For `hydrocluster()`: `stats`, `cluster`, `sp`, `rgdal`
+- For `hydrocluster()`: `cluster`, `sp`, `terra`
 - For `rindex()`: `ggplot2`
 
 Example: `rindex()` requires ggplot2 package for plotting runoff index superavit and deficit time series:
@@ -54,9 +54,11 @@ https://github.com/hydrocodes/hydRopclim/tree/main/tutorial
 ## 4. Credits
 `hydRopclim` was developed by Pedro Rau at Water Research and Technology Center of Universidad de Ingenieria y Tecnologia (UTEC-CITA, Lima) 084-2018-108 FONDECYT-BM-IADT-MU PROCIENCIA. For any issue or suggestion please write to: pedro.rau.ing@gmail.com
 
-`hydRopclim` could be not possible without runnning the next softwares and packages: R (R Core Team, 2020), Rstudio (RStudio Team, 2020), stats (R Core Team, 2020), cluster (Maechler et al, 2019), sp (Bivand et al, 2013), rgdal (Bivand et al, 2015), ggplot2 (Wickham, 2016), reshape2 (Wickham, 2007), wesanderson (Ram et al, 2018), cowplot (Wilke, 2020).
+`hydRopclim` could be not possible without runnning the next softwares and packages: R (R Core Team, 2020), Rstudio (RStudio Team, 2020), stats (R Core Team, 2020), cluster (Maechler et al, 2019), sp (Bivand et al, 2013), terra (Hijmans, 2022), ggplot2 (Wickham, 2016), reshape2 (Wickham, 2007), wesanderson (Ram et al, 2018), cowplot (Wilke, 2020).
 
 ## 5. Versions
+v 1.2.2 - June 15, 2024 (hydrocluster function improvements)
+
 v 1.2.1 - November 19, 2022 (indexcorrl function improvements)
 
 v 1.2 - April 17, 2021 (date format extended)
@@ -73,11 +75,11 @@ Rau P, Castillon F, Bourrel L. 2023. A tool in R for easy hydroclimatic calculat
 
 Bivand RS, Pebesma E, Gomez-Rubio V, 2015. Applied spatial data analysis with R, Second edition. Springer, NY. https://asdar-book.org/
 
-Bivand RS, Keitt T, Rowlingson B, 2015. rgdal: Bindings for the Geospatial Data Abstraction Library. R package version 1.0–4. http://CRAN.R-project.org/package=rgdal
-
 Bourrel L, Rau P, Dewitte B, Labat D, Lavado W, Coutaud A, Vera A, Alvarado A, Ordoñez J, 2015. Low-frequency modulation and trend of the relationship between precipitation and ENSO along the Northern to Center Peruvian Pacific coast. Hydrological Processes. 29(6):1252-1266. http://dx.doi.org/10.1002/hyp.10247
 
 Condom T, Rau P, Espinoza JC, 2011. Correction of TRMM 3B43 monthly precipitation data over the mountainous areas of Peru during the period 1998-2007. Hydrological Processes. 25(12):1924-1933. http://dx.doi.org/10.1002/hyp.7949
+
+Hijmans RJ. 2022. Terra: Spatial Data Analysis. https://rspatial.org/terra/. https://cran.r-project.org/web/packages/terra/index.html
 
 Maechler, M., Rousseeuw, P., Struyf, A., Hubert, M., Hornik, K.(2019). cluster: Cluster Analysis Basics and Extensions. R package version 2.1.0. https://cran.r-project.org/web/packages/cluster/index.html
 
