@@ -54,7 +54,7 @@ https://github.com/hydrocodes/hydRopclim/tree/main/tutorial
 ## 4. Credits
 `hydRopclim` was developed by Pedro Rau at Water Research and Technology Center of Universidad de Ingenieria y Tecnologia (UTEC-CITA, Lima) 084-2018-108 FONDECYT-BM-IADT-MU PROCIENCIA. For any issue or suggestion please write to: pedro.rau.ing@gmail.com
 
-`hydRopclim` could be not possible without runnning the next softwares and packages: R (R Core Team, 2020), Rstudio (RStudio Team, 2020), stats (R Core Team, 2020), cluster (Maechler et al, 2019), sp (Bivand et al, 2013), terra (Hijmans, 2022), ggplot2 (Wickham, 2016), reshape2 (Wickham, 2007), wesanderson (Ram et al, 2018), cowplot (Wilke, 2020).
+`hydRopclim` could be not possible without runnning the next softwares and packages: R (R Core Team, 2020), Rstudio (RStudio Team, 2020), cluster (Maechler et al, 2019), sp (Bivand et al, 2013), terra (Hijmans, 2022), ggplot2 (Wickham, 2016), reshape2 (Wickham, 2007), wesanderson (Ram et al, 2018), cowplot (Wilke, 2020).
 
 ## 5. Versions
 v 1.2.2 - June 15, 2024 (hydrocluster function improvements)
