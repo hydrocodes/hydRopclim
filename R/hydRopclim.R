@@ -572,7 +572,7 @@ data$RIndex <- res_vector
 theme_set(theme_bw())
 plotrindex <- ggplot(data, aes(x = Date, y = RIndex, fill = RIndex >=0)) +
   geom_col(position = "identity")+
-  scale_fill_manual(values = c("red", "blue"), guide = FALSE)+
+  scale_fill_manual(values = c("red", "blue"), guide = "none")+
   theme(axis.text=element_text(size=12),
         axis.title=element_text(size=12),
         plot.title=element_text(size=14))
