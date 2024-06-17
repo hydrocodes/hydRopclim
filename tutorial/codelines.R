@@ -55,3 +55,62 @@ l <- 88.3  #Main channel lenght in km
 p <- 261   #Perimeter in km
 output <- "C:/.../output.csv"
 rindex(data=database7, a, l, p)
+
+library(hydRopclim)
+library(rgdal)
+library(raster)
+library(dplyr)
+library(airGR)
+library(parallel)
+library(purrr)
+source(https://raw.githubusercontent.com/hydrocodes/hydRopclim/main/tutorial/spatial_grad/interpolation.R)
+temp_stations <- read.csv('.../serie_tiempo_temp.csv')
+prec_stations <- read.csv('.../serie_tiempo_prc.csv')
+SRTM_0 #check dem_changes function below
+ccas <- readOGR('.../basin.shp') #shp
+grad_pr= 4*10^(-4)
+grad_temp =  -6.5/1000
+output <- ".../output_3basins.csv"
+path_graphs <- ".../output/"
+spatial_grad(SRTM_0, temp_stations, prec_stations, ccas, grad_temp, grad_pr)
+
+### A simple function for changing DEM m resolution to 1, 5 or 10 km
+dem_changes <- function(DEM_DATA, res_srtm, res_resultados) {
+  if (res_srtm == 90) {
+    if (res_resultados == 10) {
+      DEM_DATA <- DEM_DATA %>% aggregate(c(108, 108))
+    } else if (res_resultados == 5) {
+      DEM_DATA <- DEM_DATA %>% aggregate(c(54, 54))
+    } else if (res_resultados == 1) {
+      DEM_DATA <- DEM_DATA %>% aggregate(c(10.8, 10.8))
+    } else {
+      cat("Invalid result resolution. It must be 10km, 5km or 1km.")
+    }
+  } else if (res_srtm == 30) {
+    if (res_resultados == 10) {
+      DEM_DATA <- DEM_DATA %>% aggregate(c(324, 324))
+    } else if (res_resultados == 5) {
+      DEM_DATA <- DEM_DATA %>% aggregate(c(162, 162))
+    } else if (res_resultados == 1) {
+      DEM_DATA <- DEM_DATA %>% aggregate(c(32.4, 32.4))
+    } else {
+      cat("Invalid result resolution. It must be 10km, 5km or 1km.")
+    }
+  } else if (res_srtm == 12.5) {
+    if (res_resultados == 10) {
+      DEM_DATA <- DEM_DATA %>% aggregate(c(777.6, 777.6))
+    } else if (res_resultados == 5) {
+      DEM_DATA <- DEM_DATA %>% aggregate(c(388.8, 388.8))
+    } else if (res_resultados == 1) {
+      DEM_DATA <- DEM_DATA %>% aggregate(c(77.66, 77.66))
+    } else {
+      cat("Invalid result resolution. It must be 10km, 5km or 1km.")
+    }
+  } else {
+    cat("Invalid DEM resolution. It must be 12.5m, 30m or 90m.")
+  }
+  return(DEM_DATA)
+}
+SRTM_0 <- dem_changes(SRTM_0, 90, 10)
+SRTM_0[SRTM_0[] < 0] <- 0
+names(SRTM_0) <- 'Elevation'
