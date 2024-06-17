@@ -63,11 +63,11 @@ library(dplyr)
 library(airGR)
 library(parallel)
 library(purrr)
-setwd('C:/.../)
+setwd("C:/.../")
 source("https://raw.githubusercontent.com/hydrocodes/hydRopclim/main/tutorial/spatial_grad/interpolation.R")
 temp_stations <- read.csv('.../serie_tiempo_temp.csv')
 prec_stations <- read.csv('.../serie_tiempo_prc.csv')
-SRTM_0 #check dem_changes function below
+SRTM_0 <- raster('.../basin_90m.tif') #check dem_changes function below
 ccas <- readOGR('.../basin.shp') #shp
 grad_pr= 4*10^(-4)
 grad_temp =  -6.5/1000
