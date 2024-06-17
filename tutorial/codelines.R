@@ -63,7 +63,7 @@ library(dplyr)
 library(airGR)
 library(parallel)
 library(purrr)
-source(https://raw.githubusercontent.com/hydrocodes/hydRopclim/main/tutorial/spatial_grad/interpolation.R)
+source("https://raw.githubusercontent.com/hydrocodes/hydRopclim/main/tutorial/spatial_grad/interpolation.R")
 temp_stations <- read.csv('.../serie_tiempo_temp.csv')
 prec_stations <- read.csv('.../serie_tiempo_prc.csv')
 SRTM_0 #check dem_changes function below
