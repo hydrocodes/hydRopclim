@@ -65,16 +65,6 @@ library(parallel)
 library(purrr)
 setwd("C:/.../")
 source("https://raw.githubusercontent.com/hydrocodes/hydRopclim/main/tutorial/spatial_grad/interpolation.R")
-temp_stations <- read.csv('.../serie_tiempo_temp.csv')
-prec_stations <- read.csv('.../serie_tiempo_prc.csv')
-SRTM_0 <- raster('.../basin_90m.tif') #check dem_changes function below
-ccas <- readOGR('.../basin.shp') #shp
-grad_pr= 4*10^(-4)
-grad_temp =  -6.5/1000
-output <- ".../output_3basins.csv"
-path_graphs <- ".../output/"
-spatial_grad(SRTM_0, temp_stations, prec_stations, ccas, grad_temp, grad_pr)
-
 ### A simple function for changing DEM m resolution to 1, 5 or 10 km
 dem_changes <- function(DEM_DATA, res_srtm, res_resultados) {
   if (res_srtm == 90) {
@@ -115,3 +105,12 @@ dem_changes <- function(DEM_DATA, res_srtm, res_resultados) {
 SRTM_0 <- dem_changes(SRTM_0, 90, 10)
 SRTM_0[SRTM_0[] < 0] <- 0
 names(SRTM_0) <- 'Elevation'
+temp_stations <- read.csv('.../serie_tiempo_temp.csv')
+prec_stations <- read.csv('.../serie_tiempo_prc.csv')
+SRTM_0 <- raster('.../basin_90m.tif') #check dem_changes function below
+ccas <- readOGR('.../basin.shp') #shp
+grad_pr= 4*10^(-4)
+grad_temp =  -6.5/1000
+output <- ".../output_3basins.csv"
+path_graphs <- ".../output/"
+spatial_grad(SRTM_0, temp_stations, prec_stations, ccas, grad_temp, grad_pr)
