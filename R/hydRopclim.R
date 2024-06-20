@@ -606,7 +606,7 @@ spatial_grad <- function(DEM, temp_stations, prec_stations, ccas, grad_temp, gra
   fechas <- temp_time_series$station
   fechas_convertidas <- parse_date_time(fechas,orders = "my")
   fechas_final <- as.yearmon(fechas_convertidas)
-  fecha <- as.Date(as.yearmon(fecha_final))
+  fecha <- as.Date(as.yearmon(fechas_final))
   
   prec_est <- t(prec_stations)
   colnames(prec_est) <- prec_est[1, ]
@@ -622,7 +622,7 @@ spatial_grad <- function(DEM, temp_stations, prec_stations, ccas, grad_temp, gra
   fechas <- prec_time_series$station
   fechas_convertidas <- parse_date_time(fechas,orders = "my")
   fechas_final <- as.yearmon(fechas_convertidas)
-  fecha <- as.Date(as.yearmon(fecha_final))
+  fecha <- as.Date(as.yearmon(fechas_final))
   prec_time_series <- prec_time_series[,-1]
   prec_time_series <- as.data.frame(lapply(prec_time_series,as.numeric))
   prec_time_series$Date <- fecha
