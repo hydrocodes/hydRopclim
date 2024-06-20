@@ -64,6 +64,7 @@ library(airGR)
 library(parallel)
 library(purrr)
 library(lubridate)
+library(zoo)
 setwd("C:/.../")
 source("https://raw.githubusercontent.com/hydrocodes/hydRopclim/main/tutorial/spatial_grad/interpolation.R")
 ### A simple function for changing DEM m resolution to 1, 5 or 10 km
