@@ -331,7 +331,7 @@ print(sp::plot(d, axes=T,pch=16, col=group, add=T))
 print(text(bdd$long,bdd$lat, row.names(bdd), cex=0.6, pos=3,col="black"))
 print(legend("right", legend=levels(group), col=levels((group)),
              pch=16, inset=0.1, cex=0.8, xpd=T, bty = "n", x.intersp=0.1, y.intersp=0.4))
-print(plot(sk2))
+print(plot(sk2, main=""))
 
 average.sil <- mean(sk2[,"sil_width"])
 neg.sil <- sum(sk2[,"sil_width"]< 0)
