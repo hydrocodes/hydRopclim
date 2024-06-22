@@ -378,9 +378,8 @@ y <- AET/P
 df = data.frame(x,y)
 # Budyko-Zhang coefficient (wZ)
 m1 <- nls( y ~ (1+wZ*x)/(1+wZ*x+1/x), data=df, start=list(wZ=0.001), trace=T)
-summary(m1)
-wZvalue <- summary(m1)$coefficients[1,1]; wZvalue
-rse <- 100*summary(m1)$sigma; rse
+wZvalue <- summary(m1)$coefficients[1,1]
+rse <- 100*summary(m1)$sigma
 if(wZvalue<0)
 {print("w<0, careful! results could not be meaningful")
 }
@@ -388,7 +387,7 @@ AETsim <- (P+PET*wZvalue)/(1+wZvalue*PET/P+P/PET)
 # correlation coefficient
 RSS.p1 <- sum(residuals(m1)^2)
 TSS <- sum(y-mean(y)^2)
-ccZ <- 1-(RSS.p1/TSS); ccZ
+ccZ <- 1-(RSS.p1/TSS)
 # Variables annual changes
 year <- data$Date
 prec.lm = lm(P ~ year)
@@ -403,30 +402,30 @@ deltaAET <- summary(aet.lm)$coefficients[2,1]
 # Quantifying climate and human impacts on runoff
 alpha <- (1+2*mean(x)+3*wZvalue*mean(x))/(1+mean(x)+wZvalue*(mean(x))^2)^2
 betha <- -(1+2*wZvalue*mean(x))/(1+mean(x)+wZvalue*(mean(x))^2)^2
-deltaQclim <- alpha*deltaP + betha*deltaPET
-deltaQh <- deltaQ - abs(deltaQclim)
-Clim <- deltaQclim*100/deltaQ; Clim
-Hum <- deltaQh*100/deltaQ; Hum
+deltaQclim <- abs(alpha*deltaP + betha*deltaPET)
+deltaQh <- deltaQ - deltaQclim
+Clim <- deltaQclim*100/deltaQ
+Hum <- deltaQh*100/deltaQ
 # Quantifying basin adaptation and sensitivity
 Adapt <- 90+atan(deltaAET*mean(P)-mean(AET)*deltaP)/(deltaPET*mean(P)-mean(PET)*deltaP)*180/pi
 Sensitv <- sqrt( ((deltaAET*mean(P)-mean(AET)*deltaP)/mean(P)^2)^2 + ((deltaPET*mean(P)-mean(PET)*deltaP)/mean(P)^2)^2 )
 
 # Creating plots
 layout(matrix(c(1,1,2,2,1,1,3,3), nrow = 4), widths = c(1, 1))
-print(plot(year,P, type="l", col="blue", ann=F, axes=F, ylim=range(P,PET,Rm)))
+plot(year,P, type="l", col="blue", ann=F, axes=F, ylim=range(P,PET,Rm))
 par(new=TRUE)
-print(plot(year,PET,col="red",type="l", ann=F, axes=F, ylim=range(P,PET,Rm)))
+plot(year,PET,col="red",type="l", ann=F, axes=F, ylim=range(P,PET,Rm))
 par(new=TRUE)
-print(plot(year, Rm, type="l",col="black", ylab="Annual (mm)", xlab='',ylim=range(P,PET,Rm)))
-print(legend("top",legend = c("P", "PET", "Runoff"),
-             col = c("blue","red","black"), lty=1, cex=0.8,horiz=TRUE, xpd=TRUE, inset = -0.6, bty = "n"))
-print(plot(x,y,xlab="Dryness index PET/P", ylab="Evaporative index AET/P"))
+plot(year, Rm, type="l",col="black", ylab="Annual (mm)", xlab='',ylim=range(P,PET,Rm))
+legend("top",legend = c("P", "PET", "Runoff"),
+             col = c("blue","red","black"), lty=1, cex=0.8,horiz=TRUE, xpd=TRUE, inset = -0.6, bty = "n")
+plot(x,y,xlab="Dryness index PET/P", ylab="Evaporative index AET/P")
 s <- seq(from=0, to=10, length=50)
-print(lines(s,predict(m1,list(x=s)), col="red"))
-print(wformat <- format(wZvalue,digits=3L))
-print(legend("top",legend=parse(text=sprintf('w == %s',wformat)),
-             col = c("red"), lty=1, cex=0.9,horiz=TRUE, xpd=TRUE, inset = -0.6, bty = "n"))
-print(plot(AET,AETsim,xlab="AET (mm)", ylab="Simulated AET (mm)"))
+lines(s,predict(m1,list(x=s)), col="red")
+wformat <- format(wZvalue,digits=3L)
+legend("top",legend=parse(text=sprintf('w == %s',wformat)),
+             col = c("red"), lty=1, cex=0.9,horiz=TRUE, xpd=TRUE, inset = -0.6, bty = "n")
+plot(AET,AETsim,xlab="AET (mm)", ylab="Simulated AET (mm)")
 
 quality <- data.frame(wZvalue,ccZ,rse)
 impacts <- data.frame(Clim,Hum)
@@ -441,11 +440,10 @@ return(list(PET, AETsim, quality, impacts, trajectories))
 #' @title hydrochange2
 #' @description Hydroclimatic change analysis at annual time step for a database that includes Potential Evapotranspiration
 #' @param data An annual dataframe object: %Y(Date), Precipitation (P in mm), Potential evapotranspiration (PET in mm) and Runoff (R in mm)
-#' @param lat A numerical value: watershed latitude
 #' @return Simulation of actual evapotranspiration by Budyko-Zhang model, quantifying impacts of climate and human activities on runoff change and quantifying watershed sensitivity and adaptation, plots and an output file
-#' @examples hydrochange2(data,lat)
+#' @examples hydrochange2(data)
 #' @export
-hydrochange2 <- function(data,lat)
+hydrochange2 <- function(data)
 { P <- data$P
 PET <- data$PET
 Rm <- data$R
