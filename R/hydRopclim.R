@@ -326,12 +326,12 @@ shpgeo <- project(shp, crs('+proj=longlat +datum=WGS84'))
 
 # Plot of location map and silhouette
 par(mfrow=c(1,2))
-print(sp::plot(shpgeo, col="grey", border=NA, axes=T, xlab="Longitude", ylab="Latitude"))
-print(sp::plot(d, axes=T,pch=16, col=group, add=T))
-print(text(bdd$long,bdd$lat, row.names(bdd), cex=0.6, pos=3,col="black"))
-print(legend("right", legend=levels(group), col=levels((group)),
-             pch=16, inset=0.1, cex=0.8, xpd=T, bty = "n", x.intersp=0.1, y.intersp=0.4))
-print(plot(sk2, main=""))
+sp::plot(shpgeo, col="grey", border=NA, axes=T, xlab="Longitude", ylab="Latitude")
+sp::plot(d, axes=T,pch=16, col=group, add=T)
+text(bdd$long,bdd$lat, row.names(bdd), cex=0.6, pos=3,col="black")
+legend("right", legend=levels(group), col=levels((group)),
+             pch=16, inset=0.1, cex=0.8, xpd=T, bty = "n", x.intersp=0.1, y.intersp=0.4)
+plot(sk2, main="")
 
 average.sil <- mean(sk2[,"sil_width"])
 neg.sil <- sum(sk2[,"sil_width"]< 0)
@@ -340,7 +340,7 @@ colnames(p) <- file[3:nrow(file),1]
 q <- cbind(bdd,p)
 ord.cluster <- q[order(q$km.cluster),]
 write.csv(t(ord.cluster),output)
-return(list(average.sil,neg.sil,km$cluster))
+return(list(paste0("Average Silhouette: ", round(average.sil,4)), paste0("Negative Silhouettes: ", neg.sil), km$cluster))
 }
 
 #' @title hydrochange
