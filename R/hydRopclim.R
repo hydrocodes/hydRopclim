@@ -21,19 +21,20 @@ pgridcorr <- function(data)
  gridc <- matrix(t(gridc.matrix),1)
  gridcv <- as.vector(gridc)
 # Time series plot
- layout(matrix(c(1, 1, 2, 2), nrow = 1), widths = c(2, 1))
- print(plot(dates,grido,col="blue",type="l", ann=F, axes=F, ylim=range(grido,prec,gridcv)))
- par(new=TRUE)
- print(plot(dates,prec,col="black",type="l", ann=F, axes=F, ylim=range(grido,prec,gridcv)))
- par(new=TRUE)
- print(plot(dates, gridcv, type="l",col="red", ylab="P (mm/month)", xlab='', ylim=range(grido,prec,gridcv)))
- print(legend("top",legend = c("Station", "Original grid", "Corrected Grid"),
-             col = c("black","blue","red"), lty=1, cex=0.8,horiz=TRUE, xpd=TRUE, inset = -0.15, bty = "n"))
- print(plot(prec,grido,col="black", ann=F, axes=F, ylim=range(grido,prec,gridcv)))
- par(new=TRUE)
- print(plot(prec,gridcv,col="red", xlab="Station (mm/month)", ylab="Grid (mm/month)", ylim=range(grido,prec,gridcv)))
- print(legend("top",legend = c("Original", "Corrected"),
-             col = c("black","red"), lty=1, cex=0.8,horiz=TRUE, xpd=TRUE, inset = -0.15, bty = "n"))
+layout(matrix(c(1, 1, 2, 2), nrow = 1), widths = c(2, 1))
+plot(dates,grido,col="blue",type="l", ann=F, axes=F, ylim=range(grido,prec,gridcv))
+par(new=TRUE)
+plot(dates,prec,col="black",type="l", ann=F, axes=F, ylim=range(grido,prec,gridcv))
+par(new=TRUE)
+plot(dates, gridcv, type="l",col="red", ylab="P (mm/month)", xlab='', ylim=range(grido,prec,gridcv))
+legend("top",legend = c("Station", "Original grid", "Corrected Grid"),
+             col = c("black","blue","red"), lty=1, cex=0.8,horiz=TRUE, xpd=TRUE, inset = -0.15, bty = "n")
+
+plot(prec,grido,col="black", ann=F, axes=F, ylim=range(grido,prec,gridcv))
+par(new=TRUE)
+plot(prec,gridcv,col="red", xlab="Station (mm/month)", ylab="Grid (mm/month)", ylim=range(grido,prec,gridcv))
+legend("top",legend = c("Original", "Corrected"),
+             col = c("black","red"), lty=1, cex=0.8,horiz=TRUE, xpd=TRUE, inset = -0.15, bty = "n")
 
 # Control quality: rmse(root-mean-square error %), cc(correlation coefficient), slope(from a linear regression)
  rmse <- sqrt(mean((prec - grido)^2))*100/mean(prec)
