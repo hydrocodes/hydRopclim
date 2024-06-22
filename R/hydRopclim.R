@@ -101,20 +101,20 @@ tgridcorr <- function(data,hBS,hNNR,hx,LR)
  temptcv <- as.vector(temptc)
 
 # Time series plot
- layout(matrix(c(1, 1, 2, 2), nrow = 1), widths = c(1,1,2,2))
- print(plot(temp,grido,col="black", ann=F, axes=F, ylim=range(grido,temp,temptcv)))
- par(new=TRUE)
- print(plot(temp,temptcv,col="green", xlab="Station (°C)", ylab="Grid (°C)", ylim=range(grido,temp,temptcv)))
- print(legend("top",legend = c("Original", "Corrected"),
-             col = c("black","green"), lty=1, cex=0.8,horiz=TRUE, xpd=TRUE, inset = -0.15, bty = "n"))
+layout(matrix(c(1, 1, 2, 2), nrow = 1), widths = c(1,1,2,2))
+plot(temp,grido,col="black", ann=F, axes=F, ylim=range(grido,temp,temptcv))
+par(new=TRUE)
+plot(temp,temptcv,col="green", xlab="Station (°C)", ylab="Grid (°C)", ylim=range(grido,temp,temptcv))
+legend("top",legend = c("Original", "Corrected"),
+             col = c("black","green"), lty=1, cex=0.8,horiz=TRUE, xpd=TRUE, inset = -0.15, bty = "n")
 
- print(plot(dates,grido,col="blue",type="l", ann=F, axes=F, ylim=range(grido,temp,gridcv)))
- par(new=TRUE)
- print(plot(dates,temp,col="black",type="l", ann=F, axes=F, ylim=range(grido,temp,gridcv)))
- par(new=TRUE)
- print(plot(dates, gridcv, type="l",col="red", ylab="T (°C)", xlab='', ylim=range(grido,temp,gridcv)))
- print(legend("top",legend = c("Station", "Original grid", "Target elev"),
-             col = c("black","blue","red"), lty=1, cex=0.8,horiz=TRUE, xpd=TRUE, inset = -0.15, bty = "n"))
+plot(dates,grido,col="blue",type="l", ann=F, axes=F, ylim=range(grido,temp,gridcv))
+par(new=TRUE)
+plot(dates,temp,col="black",type="l", ann=F, axes=F, ylim=range(grido,temp,gridcv))
+par(new=TRUE)
+plot(dates, gridcv, type="l",col="red", ylab="T (°C)", xlab='', ylim=range(grido,temp,gridcv))
+legend("top",legend = c("Station", "Original grid", "Target elev"),
+             col = c("black","blue","red"), lty=1, cex=0.8,horiz=TRUE, xpd=TRUE, inset = -0.15, bty = "n")
 
 # Control quality: rmse(root-mean-square error %), cc(correlation coefficient)
  rmse <- sqrt(mean((temp - grido)^2))*100/mean(temp)
