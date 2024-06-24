@@ -11,5 +11,5 @@ Regional vector method for a group of stations with annual data (Brunet-Moret, 1
 data: An annual dataframe object with station names
 }
 \examples{
-rvm(data=database10, zeros=F)
+rvm(data=database10)
 }
