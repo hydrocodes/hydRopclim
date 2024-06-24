@@ -753,8 +753,8 @@ spatial_grad <- function(DEM, temp_stations, prec_stations, ccas, grad_temp, gra
 #' @return Regional vector index, quality control with stations and plot
 #' @examples rvm(data)
 #' @export
-rvm <- function(A, zeros = T){
-  A <- as.matrix(A)
+rvm <- function(data, zeros = F){
+  A <- as.matrix(data)
   if(zeros){
     es_na <- apply(A,2,function(x) all(na.omit(x)==0))
     A <- A[,!es_na]
