@@ -116,3 +116,8 @@ grad_temp =  -6.5/1000
 output <- ".../output_3basins.csv"
 path_graphs <- ".../output/"
 spatial_grad(SRTM_0, temp_stations, prec_stations, ccas, grad_temp, grad_pr)
+
+library(hydRopclim)
+database10 <- read.csv("C:/.../data.csv")
+output <- "C:/.../output.csv"
+rvm(database10, zeros = F)
