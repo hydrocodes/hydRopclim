@@ -1,7 +1,7 @@
 #' @title pgridcorr
 #' @description Correcting precipitation grid
 #' @param data A monthly dataframe: %b-%Y(Date), in-situ data (Station) and grid data (Grid)
-#' @return Corrected precipitation grid in function of an in-situ station, control quality, plots and an output file
+#' @return Corrected precipitation grid in function of an in-situ station, quality control, plots and an output file
 #' @examples pgridcorr(data)
 #' @export
 pgridcorr <- function(data)
@@ -57,7 +57,7 @@ legend("top",legend = c("Original", "Corrected"),
 #' @param hNNR A numeric value: grid level elevation in masl
 #' @param hx A numeric value: Location elevation to correct in masl
 #' @param LR A 12 elements vector: mean monthly lapse rate in °C/100m
-#' @return Corrected temperature grid at a given elevation in function of an in-situ station, control quality, plots and an output file
+#' @return Corrected temperature grid at a given elevation in function of an in-situ station, quality control, plots and an output file
 #' @examples tgridcorr(data,hBS,hNNR,hx,LR)
 #' @export
 tgridcorr <- function(data,hBS,hNNR,hx,LR)
@@ -304,7 +304,7 @@ return(list.fin)
 #' @param file A dataframe object: head station names, latitude, longitude and monthly or annual data
 #' @param shp A spatial object: a polygon shapefile of study region
 #' @param clusters A numeric value: number of clusters
-#' @return K-means clustering spatial visualization, control quality by silhouette evaluation and output file
+#' @return K-means clustering spatial visualization, quality control by silhouette evaluation and output file
 #' @examples hydrocluster(file,shp,clusters)
 #' @export
 hydrocluster <- function(file,shp,clusters)
@@ -745,4 +745,62 @@ spatial_grad <- function(DEM, temp_stations, prec_stations, ccas, grad_temp, gra
     plot(ccas, add = TRUE, border = "black")
   }
   write.csv(df_series_tiempo_final,output)
+}
+
+#' @title rvm
+#' @description Regional vector method
+#' @param data An annual dataframe: in-situ data with station names
+#' @return Regional vector index, quality control with stations and plot
+#' @examples rvm(data)
+#' @export
+rvm <- function(A, zeros = T){
+  A <- as.matrix(A)
+  if(zeros){
+    es_na <- apply(A,2,function(x) all(na.omit(x)==0))
+    A <- A[,!es_na]
+  }
+  uis <- apply(A,1,function(x) sum(!is.na(x)))
+  mat <- matrix(nrow = ncol(A),ncol = ncol(A))
+  for(t in 1:ncol(A)){
+    C <- vector(mode = 'numeric',length = ncol(A))
+    for (i in 1:nrow(A)){
+      ui <- uis[i]
+      if(!is.na(A[i,t])){
+        Ct <- 2*A[i,t]^2*(1-1/ui)^2 +2*(ui-1)*A[i,t]^2/ui^2   
+        C[t] <- C[t] + Ct
+        Ca <- -(4/ui)*(1-1/ui)*A[i,t]+2*(ui-2)*A[i,t]/ui^2
+        C[-t] <- C[-t] + Ca*ifelse(is.na(A[i,-t]),0,A[i,-t])
+      }
+    }
+    mat[t,] <- C
+  }
+  df_mat <- as.data.frame(mat)
+  df_mat$V1 <- -df_mat$V1
+  formula0 <- paste0('V1 ~ 0 +',paste0(paste0('V',2:ncol(mat)),collapse = ' + '))
+  Xinv <- c(1,lm(formula0,df_mat)$coefficients)
+
+  z <- colMeans(t(A)*Xinv,na.rm=T)
+  z[is.nan(z)] <-NA  
+  c <- mean(z,na.rm=T)
+  z <- z/c
+  Xinv <- Xinv/c
+  X <- 1/Xinv
+
+  df_vector <- data.frame(VECTOR = z)
+  df_vector2 <- (t(t(A)/X))
+  df_vector2 <- as.data.frame(df_vector2)
+  df_vector <- cbind(df_vector,df_vector2)
+  
+  cc <- c(); dsd <- c()
+  plot(df_vector$VECTOR, type="l", col="grey", ylab="Regional vector", xlab="", ylim=c(0,max(df_vector[1:nrow(df_vector),2:ncol(df_vector)])))
+  for (i in 2:ncol(df_vector)) {
+    lines(df_vector[,i], type="l", col="grey")
+    cc[i-1] <- c(cor(df_vector$VECTOR,df_vector[,i]))
+    dsd[i-1]<- c(sd(df_vector$VECTOR-df_vector[,i]))
+  }
+  lines(df_vector$VECTOR, type="l", col="red", lwd=2)
+  ccdf <- data.frame(ID=colnames(df_vector[2:ncol(df_vector)]), correlation.coef=cc)
+  dsddf <- data.frame(ID=colnames(df_vector[2:ncol(df_vector)]), deviation.sd=dsd)
+  write.csv(df_vector,output)
+  return(list(ccdf,dsddf,df_vector$VECTOR))
 }
