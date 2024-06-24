@@ -57,7 +57,7 @@ https://github.com/hydrocodes/hydRopclim/tree/main/tutorial
 `hydRopclim` could be not possible without runnning the next softwares and packages: R (R Core Team, 2020), Rstudio (RStudio Team, 2020), cluster (Maechler et al, 2019), sp (Bivand et al, 2013), terra (Hijmans, 2022), ggplot2 (Wickham, 2016), reshape2 (Wickham, 2007), wesanderson (Ram et al, 2018), cowplot (Wilke, 2020).
 
 ## 5. Versions
-v 1.3 - June 15, 2024 (hydrocluster function updated and new spatial_grad test function)
+v 1.3 - June 15, 2024 (hydrocluster function updated and new spatial_grad and rvm test functions)
 
 v 1.2.1 - November 19, 2022 (indexcorrl function improvements)
 
