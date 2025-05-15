@@ -146,7 +146,6 @@ grad_spatial <- function(DEM, temp_stations, prec_stations, ccas,gradiente_temp,
                                           var = 'temp')
   
   # Cálculo de la evapotranspiración potencial (EP)
-  #dates = temp_time_series$Date
   brick_EP <- PE_oudin_ras_mon_v2(brick_tas = brick_tas, dates = temp_time_series$Date)
   
   #exportando archivos raster
@@ -158,7 +157,6 @@ grad_spatial <- function(DEM, temp_stations, prec_stations, ccas,gradiente_temp,
   
   # Promedio ANUAL para temperatura y evapotranspiración (variables promedio)
   mean_tas <- mean(brick_tas_cropped)
-  #mean_EP  <- mean(brick_EP_cropped)
   
   # Para precipitación, calculamos el promedio mensual primero y luego la suma para acumulado anual
   fechas <- temp_time_series$Date
