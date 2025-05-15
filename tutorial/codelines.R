@@ -131,6 +131,7 @@ dem_changes <- function(DEM_DATA, res_srtm, res_resultados) {
 SRTM_0 <- dem_changes(SRTM_0, 90, 10) # here need to change the dem resolution and resolution that you want
 SRTM_0[SRTM_0[] < 0] <- 0
 names(SRTM_0) <- 'Elevation'
+ccas$NOMBRE <- 'Cuenca' #name of the basin (if you dont have "NOMBRE" or "NAME" in the .shp)
 
 grad_spatial(SRTM_0, temp_stations, prec_stations, ccas, grad_temp, grad_pr)
 
