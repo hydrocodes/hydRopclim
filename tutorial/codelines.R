@@ -76,6 +76,8 @@ grad_pr= 4*10^(-4)
 grad_temp =  -6.5/1000
 output <- ".../output_3basins.csv"
 path_graphs <- ".../output/"
+
+
 ### A simple function for changing DEM m resolution to 0.1,0.25, 1, 5 or 10 km
 dem_changes <- function(DEM_DATA, res_srtm, res_resultados) {
   if (res_srtm == 90) {
@@ -85,12 +87,13 @@ dem_changes <- function(DEM_DATA, res_srtm, res_resultados) {
       DEM_DATA <- DEM_DATA %>% aggregate(c(54, 54))
     } else if (res_resultados == 1) {
       DEM_DATA <- DEM_DATA %>% aggregate(c(10.8, 10.8))
-    } else if (res_resultados == 0.25) {
-      DEM_DATA <- DEM_DATA %>% aggregate(c(2.7, 2.7))
+    } else if (res_resultados == 0.5) {
+      DEM_DATA <- DEM_DATA %>% aggregate(c(5.4, 5.4))
     } else if (res_resultados == 0.1) {
       DEM_DATA <- DEM_DATA %>% aggregate(c(1.08, 1.08))
-    } else {
-      cat("Invalid result resolution. It must be 10km, 5km, 1km 0.25km or 0.1km")
+    }
+    else {
+      cat("Invalid result resolution. It must be 10km, 5km, 1km, 500m or 100m.")
     }
   } else if (res_srtm == 30) {
     if (res_resultados == 10) {
@@ -99,12 +102,12 @@ dem_changes <- function(DEM_DATA, res_srtm, res_resultados) {
       DEM_DATA <- DEM_DATA %>% aggregate(c(162, 162))
     } else if (res_resultados == 1) {
       DEM_DATA <- DEM_DATA %>% aggregate(c(32.4, 32.4))
-    } else if (res_resultados == 0.25) {
-      DEM_DATA <- DEM_DATA %>% aggregate(c(8.1, 8.1))
+    } else if (res_resultados == 0.5) {
+      DEM_DATA <- DEM_DATA %>% aggregate(c(16.2, 162))
     } else if (res_resultados == 0.1) {
       DEM_DATA <- DEM_DATA %>% aggregate(c(3.24, 3.24))
     } else {
-      cat("Invalid result resolution. It must be 10km, 5km, 1km 0.25km or 0.1km")
+      cat("Invalid result resolution. It must be 10km, 5km, 1km, 500m or 100m.")
     }
   } else if (res_srtm == 12.5) {
     if (res_resultados == 10) {
@@ -113,12 +116,12 @@ dem_changes <- function(DEM_DATA, res_srtm, res_resultados) {
       DEM_DATA <- DEM_DATA %>% aggregate(c(388.8, 388.8))
     } else if (res_resultados == 1) {
       DEM_DATA <- DEM_DATA %>% aggregate(c(77.66, 77.66))
-    } else if (res_resultados == 0.25) {
-      DEM_DATA <- DEM_DATA %>% aggregate(c(19.415, 19.415))
+    } else if (res_resultados == 0.5) {
+      DEM_DATA <- DEM_DATA %>% aggregate(c(38.88, 38.88))
     } else if (res_resultados == 0.1) {
       DEM_DATA <- DEM_DATA %>% aggregate(c(7.766, 7.766))
     } else {
-      cat("Invalid result resolution. It must be 10km, 5km, 1km 0.25km or 0.1km")
+      cat("Invalid result resolution. It must be 10km, 5km, 1km, 500m or 100m.")
     }
   } else {
     cat("Invalid DEM resolution. It must be 12.5m, 30m or 90m.")
@@ -129,7 +132,7 @@ SRTM_0 <- dem_changes(SRTM_0, 90, 10) # here need to change the dem resolution a
 SRTM_0[SRTM_0[] < 0] <- 0
 names(SRTM_0) <- 'Elevation'
 
-spatial_grad(SRTM_0, temp_stations, prec_stations, ccas, grad_temp, grad_pr)
+grad_spatial(SRTM_0, temp_stations, prec_stations, ccas, grad_temp, grad_pr)
 
 library(hydRopclim)
 database10 <- read.csv("C:/.../data.csv")
