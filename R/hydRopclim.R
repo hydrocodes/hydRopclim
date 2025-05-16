@@ -589,6 +589,156 @@ return(list(res_vector, Q, plotrindex))
 #' @return Corrected mean areal precipitation, temperature, potential evapotranspiration time series by elevation and for each basin and plots
 #' @examples spatial_grad(DEM, temp_stations, prec_stations, ccas, grad_temp, grad_pr)
 #' @export
+
+library(hydRopclim)
+library(ggplot2)
+library(rgdal)
+library(raster)
+library(dplyr)
+library(lubridate)
+library(parallel)
+library(zoo)
+###valery_v2.R
+Θpr <- 4*10^(-4)
+Θt <- -6.5/1000
+
+valery_interpolation <- function(DEM ,sta_coor, sta_z, data , 
+                                 p = 2 , Θ, var = 'pr'){
+  DEMnl <- brick(brick(DEM),nl=nrow(sta_coor))
+  DEMnl[] <- DEM[]
+  nDates <- nrow(data)
+  
+  w <- brick(DEM,nl=nrow(sta_coor))
+  for (i in 1:nrow(sta_coor)){
+    w[[i]] <- 1/distanceFromPoints(DEM,sta_coor[i,])^p
+  }
+  Sw <- sum(w[[1:nrow(sta_coor)]])
+  
+  raster <- brick(DEM)
+  if (var=='pr'){
+    for (i in 1:nrow(data)){
+      Prcorr <- (as.numeric(data[i,])*exp(Θ*(DEMnl-sta_z)))
+      raster[[i]] <- sum(w* Prcorr)/Sw
+      cat('avanzando ',i/nDates*100,'% \n')
+    }
+  } else if (var=='temp'){
+    for (i in 1:nrow(data)){
+      Tcorr <- (Θ*(DEMnl-sta_z)+as.numeric(data[i,]))
+      raster[[i]] <- sum(w* Tcorr)/Sw
+      cat('avanzando ',i/nDates*100,'% \n')
+    }    
+  }
+  return(raster)
+}
+
+#esta funcion hace lo  mismo que la anterior pero ignora los NAs de data
+valery_interpolation_NA_v2 <- function(DEM ,sta_coor, sta_z, data , 
+                                       p = 2 , Θ, var = 'pr'){
+  # DEMnl <- brick(brick(DEM),nl=nrow(sta_coor))
+  # DEMnl[] <- DEM[]
+  nDates <- nrow(data)
+  # ras_z <- DEM[]
+  
+  
+  # w <- brick(DEM,nl=nrow(sta_coor))
+  w <- t( sapply(1:nrow(sta_coor),function(i){
+    (1/distanceFromPoints(DEM,sta_coor[i,])^p)[]
+  })  )
+  # for (i in 1:nrow(sta_coor)){
+  #   w[[i]] <- 1/distanceFromPoints(DEM,sta_coor[i,])^p
+  # }
+  fac <- matrix(rep(DEM[],length(sta_z)),nrow=length(sta_z),byrow = T) - sta_z
+  if (var=='pr') fac <- exp(Θ*fac)
+  else if(var=='temp')   fac <- (Θ*fac)
+  
+  raster <- brick(brick(DEM),nl = nrow(data),values=T)
+  # brick(DEM,nl = nrow(data),values=T)
+  if (var=='pr'){
+    for (i in 1:nrow(data)){
+      ind <- which(!is.na(data[i,]))
+      Prcorr <- as.numeric(data[i,ind])*fac[ind,]
+      # Prcorr <- (as.numeric(data[i,ind])*exp(Θ*(DEMnl[[ind]]-sta_z[ind])))
+      # Sw <- sum(w[[ind]])
+      Sw <- colSums(w[ind,])
+      # raster[[i]] <- sum(w[[ind]]* Prcorr)/Sw
+      raster[[i]] <- colSums(w[ind,]* Prcorr)/Sw
+      
+      cat('avanzando ',round(i/nDates*100,2),'%    \r')   
+      # round(i/nDates*100,2)
+    }
+    
+  } else if (var=='temp'){
+    for (i in 1:nrow(data)){
+      ind <- which(!is.na(data[i,]))
+      # Tcorr <- (Θ*(DEMnl[[ind]]-sta_z[ind])+as.numeric(data[i,ind]))
+      Tcorr <- (fac[ind,]+as.numeric(data[i,ind]))
+      # Sw <- sum(w[[ind]])
+      Sw <- colSums(w[ind,])
+      # raster[[i]] <- sum(w[[ind]]* Tcorr)/Sw
+      raster[[i]] <- colSums(w[ind,]* Tcorr)/Sw
+      cat('avanzando ',round(i/nDates*100,2),'%   ',' \r') #,'i=',i
+      # round(i/nDates*100,2)
+      # format(round(i/nDates*100, 2), nsmall = 2)
+    }    
+  }
+  return(raster)
+}
+
+
+############## utilities
+PE_oudin_ras_mon_v2 <- function(brick_tas,dates,cca = NULL,n_cores = 4){
+  require(dplyr)
+  require(airGR)
+  require(purrr)
+  #require(parallel)
+  rasterEP <- brick_tas #brick(brick_tas)
+  # names(rasterEP) <- names(rasterT)
+  
+  ### ---- OBTENER FECHAS DIARIAS  ---- ###
+  dates_i <- (dates %>% as.POSIXlt())
+  dates_i$mday <- rep(1,length(dates_i))         # puede obviarse si todos son 1 (dia_mes)
+  dates_f <- dates_i
+  dates_f$mon <- dates_f$mon +1 
+  dates_f$mday <- dates_f$mday -1
+  # dates_i <- as.POSIXct(dates_i)
+  # dates_f <- as.POSIXct(dates_f)
+  
+  dates_d <- lapply(1:length(dates_i),
+                    function(k) seq(dates_i[k], dates_f[k], by = 'days')) 
+  n_dias <- sapply(dates_d, length)
+  dates_d <- reduce(dates_d, c)
+  
+  lats <- coordinates(brick_tas)[,'y']
+  dias_julianos <- as.numeric(format(dates_d,'%j'))
+  
+data <- lapply(1:ncell(rasterEP), function(i) {
+    cat(round(i/ncell(rasterEP)),'%','\r')
+    temp <- as.vector(brick_tas[i])
+    temp <- rep(temp, n_dias)
+    # lat <- coordinates(brick_tas)[,'y'][i]
+    lat <- lats[i]
+    # rasterEP[i] <- 
+    PE_Oudin(dias_julianos,
+             temp, lat,'deg') %>%    #days$yday+1  #days11
+      data.frame(dates = rep(dates_i, n_dias), .) %>% group_by(dates) %>% 
+      summarize_all(sum) %>% .$. #%>% matrix(nrow = 1)
+}) %>% 
+    simplify2array(., higher = (TRUE == "array"))
+
+
+  
+  for(i in 1:nlayers(rasterEP)){
+    rasterEP[[i]][] <- data[i,]
+  }
+  
+  if(!is.null(cca)){
+    values_EP <- raster::extract(rasterEP,cca,weights=TRUE,mean) %>% as.numeric
+    # df_EP <- 
+    data.frame(dates = dates,EP = values_EP) %>% return()
+  } else { return(rasterEP)}
+}
+
+
 spatial_grad <- function(DEM, temp_stations, prec_stations, ccas, grad_temp, grad_pr) {
   temp_est <- t(temp_stations)
   colnames(temp_est) <- temp_est[1, ]
