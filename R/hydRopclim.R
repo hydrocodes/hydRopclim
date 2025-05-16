@@ -739,7 +739,9 @@ data <- lapply(1:ncell(rasterEP), function(i) {
 }
 
 
-spatial_grad <- function(DEM, temp_stations, prec_stations, ccas, grad_temp, grad_pr) {
+grad_spatial <- function(DEM, temp_stations, prec_stations, ccas,gradiente_temp,gradiente_pp) {
+  # preprocesamiento - datos 
+  ## TEMPERATURA 
   temp_est <- t(temp_stations)
   colnames(temp_est) <- temp_est[1, ]
   temp_est <- temp_est[-1, ]
@@ -751,11 +753,16 @@ spatial_grad <- function(DEM, temp_stations, prec_stations, ccas, grad_temp, gra
     Z = as.numeric(temp_est$Z)
   )
   temp_time_series <- temp_stations[-(1:3),]
-  fechas <- temp_time_series$station
-  fechas_convertidas <- parse_date_time(fechas,orders = "my")
-  fechas_final <- as.yearmon(fechas_convertidas)
-  fecha <- as.Date(as.yearmon(fechas_final))
+  fecha <- temp_time_series$station
+  fecha <- as.Date(paste0("01-", fecha), format = "%d-%b-%Y")
+  temp_time_series <- temp_time_series[,-1]
+  #temp_time_series <- na.omit(temp_time_series)
+  temp_time_series <- as.data.frame(lapply(temp_time_series,as.numeric))
+
+  temp_time_series$Date <- fecha
   
+  
+  ## PRECIPITACION 
   prec_est <- t(prec_stations)
   colnames(prec_est) <- prec_est[1, ]
   prec_est <- prec_est[-1, ]
@@ -767,31 +774,114 @@ spatial_grad <- function(DEM, temp_stations, prec_stations, ccas, grad_temp, gra
     Z = as.numeric(prec_est$Z)
   )
   prec_time_series <- prec_stations[-(1:3),]
-  fechas <- prec_time_series$station
-  fechas_convertidas <- parse_date_time(fechas,orders = "my")
-  fechas_final <- as.yearmon(fechas_convertidas)
-  fecha <- as.Date(as.yearmon(fechas_final))
+  fecha <- prec_time_series$station
+  fecha <- as.Date(paste0("01-", fecha), format = "%d-%b-%Y")
   prec_time_series <- prec_time_series[,-1]
+  #prec_time_series <- na.omit(prec_time_series)
   prec_time_series <- as.data.frame(lapply(prec_time_series,as.numeric))
+
   prec_time_series$Date <- fecha
   
-  # Precipitation interpolation
-  brick_pr <- valery_interpolation(DEM = SRTM_0,
+  
+  
+
+  
+  # Interpolación de la precipitación
+  brick_pr <- valery_interpolation_NA_v2(DEM = SRTM_0,
                                          sta_coor = prec_est[,c('long','lat')],
                                          sta_z = prec_est$Z,
                                          data = prec_time_series[,-ncol(prec_time_series)], # sin los tiempos 
-                                         grad = grad_pr,
+                                         p = 2,
+                                         Θ = 4*10^(-4),
                                          var = 'pr')
-  # Temperature interpolation
-  brick_tas <- valery_interpolation(DEM = SRTM_0,
+  
+  
+  # Interpolación de la temperatura
+  brick_tas <- valery_interpolation_NA_v2(DEM = SRTM_0,
                                           sta_coor = temp_est[,c('long','lat')],
                                           sta_z = temp_est$Z,
                                           data = temp_time_series[,-ncol(temp_time_series)],
-                                          grad = grad_temp,
+                                          p = 2,
+                                          Θ = -6.5/1000,
                                           var = 'temp')
-  # PET-Oudin estimation 
-  brick_EP <- PE_oudin_ras_mon(brick_tas = brick_tas, dates = temp_time_series$Date)
+  
+  # Cálculo de la evapotranspiración potencial (EP)
+  #dates = temp_time_series$Date
+  brick_EP <- PE_oudin_ras_mon_v2(brick_tas = brick_tas, dates = temp_time_series$Date)
+  
+  #exportando archivos raster
 
+  brick_tas_cropped <- mask(crop(brick_tas, ccas), ccas)
+  brick_pr_cropped <- mask(crop(brick_pr, ccas), ccas)
+  brick_EP_cropped <- mask(crop(brick_EP, ccas), ccas)
+  
+  
+  # Promedio ANUAL para temperatura y evapotranspiración (variables promedio)
+  mean_tas <- mean(brick_tas_cropped)
+  #mean_EP  <- mean(brick_EP_cropped)
+  
+  # Para precipitación, calculamos el promedio mensual primero y luego la suma para acumulado anual
+  fechas <- temp_time_series$Date
+  
+  promedio_mensual <- function(brick, fechas) {
+    months <- format(fechas, "%m")
+    stack_mensual <- stack()
+    for (m in 1:12) {
+      capas_mes <- which(months == sprintf("%02d", m))
+      if (length(capas_mes) > 0) {
+        promedio_mes <- mean(brick[[capas_mes]])
+        stack_mensual <- addLayer(stack_mensual, promedio_mes)
+      }
+    }
+    return(stack_mensual)
+  }
+  
+  tas_mensual <- promedio_mensual(brick_tas_cropped, fechas)
+  pr_mensual  <- promedio_mensual(brick_pr_cropped, fechas)
+  etp_mensual <- promedio_mensual(brick_EP_cropped, fechas)
+  
+  # Nombres de los meses
+  month_names <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+  names(tas_mensual) <- month_names
+  names(pr_mensual)  <- month_names
+  names(etp_mensual) <- month_names
+  
+  # Precipitación anual acumulada como suma de promedios mensuales
+  pr_anual_acumulada <- calc(pr_mensual, sum)
+  names(pr_anual_acumulada) <- "Precipitacion_Anual_Acumulada"
+  
+  etp_anual_acumulada <- calc(etp_mensual, sum)
+  names(etp_anual_acumulada) <- "Evapotranspiracion_Anual_Acumulada"
+  
+  
+  # ============================
+  # EXPORTAR NETCDF
+  # ============================
+  
+  # Promedios ANUALES (tas, etp)
+  writeRaster(mean_tas, file.path(path_graphs, "tas_promedio_anual.nc"),
+              format = "CDF", varname = "tas", zname = "time", overwrite = TRUE)
+  
+  writeRaster(etp_anual_acumulada, file.path(path_graphs, "etp_promedio_anual.nc"),
+              format = "CDF", varname = "etp", zname = "time", overwrite = TRUE)
+  
+  # Precipitación anual acumulada (suma de promedios mensuales)
+  writeRaster(pr_anual_acumulada, file.path(path_graphs, "pr_promedio_anual.nc"),
+              format = "CDF", varname = "pr", zname = "time", overwrite = TRUE)
+  
+  # Promedios MENSUALES
+  writeRaster(tas_mensual, file.path(path_graphs, "tas_promedio_mensual.nc"),
+              format = "CDF", varname = "tas", zname = "month", overwrite = TRUE)
+  
+  writeRaster(pr_mensual, file.path(path_graphs, "pr_promedio_mensual.nc"),
+              format = "CDF", varname = "pr", zname = "month", overwrite = TRUE)
+  
+  writeRaster(etp_mensual, file.path(path_graphs, "etp_promedio_mensual.nc"),
+              format = "CDF", varname = "etp", zname = "month", overwrite = TRUE)
+
+  
+  
   ############### brick pr ##############
   num_capas <- nlayers(brick_pr)
   indices <- seq(1, num_capas, by = 12)
@@ -806,17 +896,23 @@ spatial_grad <- function(DEM, temp_stations, prec_stations, ccas, grad_temp, gra
     suma_12_pr_rasterbrick <- addLayer(suma_rasterbrick, suma_temp)
   }
   
+  # Ver el resultado
   ############### brick PET ##############
   num_capas <- nlayers(brick_EP)
   indices <- seq(1, num_capas, by = 12)
   suma_rasterbrick <- brick()
+  
   for (i in seq_along(indices)) {
     # Calcular el índice final para cada grupo de 12 capas
     fin <- min(indices[i] + 11, num_capas)
+    
     # Sumar las capas dentro del rango actual
     suma_temp <- sum(brick_EP[[indices[i]:fin]])
     suma_12_PET_rasterbrick <- addLayer(suma_rasterbrick, suma_temp)
   }
+  
+  
+  ##########
   
   promedio_P <- mean(suma_12_pr_rasterbrick, na.rm = TRUE)
   promedio_T <- mean(brick_tas, na.rm = TRUE)
@@ -827,29 +923,33 @@ spatial_grad <- function(DEM, temp_stations, prec_stations, ccas, grad_temp, gra
   brick_T_recortado <- mask(promedio_T, ccas)
   brick_EP_recortado <- mask(promedio_EP, ccas)
   
-  # Extracting time series from basins
+  #SACANDO PARA SERIES DE TIEMPO
+  # Extracción de datos por cuenca
   ccas$NAME <- ccas$NOMBRE
   ccas$NAMES <- ccas$NOMBRE
+  
   df_pr_ccas <- raster::extract(brick_pr,ccas,fun=mean, weights=T) %>% t #saca promedio por cuenca de pr y temp
-  df_pr_ccas <- df_pr_ccas %>% as.data.frame() %>% data.frame(dates = prec_time_series$Date,.)
+  df_pr_ccas <- df_pr_ccas %>% as.data.frame() %>% data.frame(dates =fecha,.)
   names(df_pr_ccas)[-1] <- ccas$NOMBRE
   rownames(df_pr_ccas) <- NULL
   
   df_tas_ccas <- raster::extract(brick_tas,ccas,fun=mean, weights=T) %>% t
-  df_tas_ccas <- df_tas_ccas %>% as.data.frame() %>% data.frame(dates = temp_time_series$Date,.)
+  df_tas_ccas <- df_tas_ccas %>% as.data.frame() %>% data.frame(dates = fecha,.)
   names(df_tas_ccas)[-1] <- ccas$NOMBRE
   rownames(df_tas_ccas) <- NULL
   
   df_EP_ccas <- raster::extract(brick_EP,ccas,fun=mean, weights=T) %>% t
-  df_EP_ccas <- df_EP_ccas %>% as.data.frame() %>% data.frame(dates = temp_time_series$Date,.)
+  df_EP_ccas <- df_EP_ccas %>% as.data.frame() %>% data.frame(dates = fecha,.)
   names(df_EP_ccas)[-1] <- ccas$NOMBRE
   rownames(df_EP_ccas) <- NULL
   
   # Agregar fechas a los dataframes
   df_pr_ccas$dates <- temp_time_series$Date
   df_tas_ccas$dates <- temp_time_series$Date
+  
   df_EP_ccas$dates <- temp_time_series$Date
 
+###########################
   cuencas_nombres <- ccas$NOMBRE
 
   df_series_tiempo_final <- data.frame(dates = df_pr_ccas$dates)
@@ -859,6 +959,7 @@ spatial_grad <- function(DEM, temp_stations, prec_stations, ccas, grad_temp, gra
     pr_columna_nombre <- paste("P.", cuenca_nombre, sep = "")
     tas_columna_nombre <- paste("Tm.", cuenca_nombre, sep = "")
     EP_columna_nombre <- paste("PET.", cuenca_nombre, sep = "")
+    
     # agregando columnas al dataframe
     df_series_tiempo_final[[pr_columna_nombre]] <- df_pr_ccas[, cuenca_nombre]
     df_series_tiempo_final[[tas_columna_nombre]] <- df_tas_ccas[, cuenca_nombre]
@@ -867,14 +968,20 @@ spatial_grad <- function(DEM, temp_stations, prec_stations, ccas, grad_temp, gra
   df_series_tiempo_final <- df_series_tiempo_final[, colSums(!is.na(df_series_tiempo_final)) > 0]
   
   ################################## PLOTEANDO ########################
-  # List of brick to plot
+  
+  # Lista de bricks a plotear
   bricks <- list(brick_P_recortado, brick_T_recortado, brick_EP_recortado)
-  tamanio_letra <- 1.2 #font size
-  # Figure dimensions
+  
+  # Tamaño de letra deseado
+  tamanio_letra <- 1.2
+  
+  # Dimensiones del gráfico 
   ancho_grafico <- 6400
   alto_grafico <- 4800
+  
   # Nombres deseados para los archivos
   nombres_archivos <- c("graph_P_mean.png", "graph_Tm_mean.png", "graph_EP_mean.png")
+  
   # Títulos deseados para los gráficos
   titulos_graficos <- c("Annual mean Precipitation (mm)", "Annual mean Temperature (°C)", "Annual mean Potential Evapotranspiration (mm)")
   
@@ -883,18 +990,23 @@ spatial_grad <- function(DEM, temp_stations, prec_stations, ccas, grad_temp, gra
     # Crear un nuevo plot con dimensiones ajustadas
     png(paste(path_graphs, nombres_archivos[i], sep = ""), width = ancho_grafico, height = alto_grafico, res = 800)
     plot(bricks[[i]], main = titulos_graficos[i], cex.main = tamanio_letra * 1, cex.lab = tamanio_letra)
+    
     # Añadir las cuencas encima del plot
     plot(ccas, add = TRUE, border = "black")
+    
     # Cerrar el gráfico actual
     dev.off()
   }
   par(mfrow = c(1, 3))
+  # Bucle 
   for (i in seq_along(bricks)) {
     plot(bricks[[i]], main = titulos_graficos[i], cex.main = tamanio_letra * 1, cex.lab = tamanio_letra)
     # Superponer el shapefile en el gráfico actual
     plot(ccas, add = TRUE, border = "black")
-  }
+  }#################################################################
+  library(openxlsx)
   write.csv(df_series_tiempo_final,output)
+
 }
 
 #' @title rvm
