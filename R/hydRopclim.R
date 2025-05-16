@@ -590,14 +590,7 @@ return(list(res_vector, Q, plotrindex))
 #' @examples spatial_grad(DEM, temp_stations, prec_stations, ccas, grad_temp, grad_pr)
 #' @export
 
-library(hydRopclim)
-library(ggplot2)
-library(rgdal)
-library(raster)
-library(dplyr)
-library(lubridate)
-library(parallel)
-library(zoo)
+
 ###valery_v2.R
 Θpr <- 4*10^(-4)
 Θt <- -6.5/1000
@@ -1004,7 +997,6 @@ grad_spatial <- function(DEM, temp_stations, prec_stations, ccas,gradiente_temp,
     # Superponer el shapefile en el gráfico actual
     plot(ccas, add = TRUE, border = "black")
   }#################################################################
-  library(openxlsx)
   write.csv(df_series_tiempo_final,output)
 
 }
