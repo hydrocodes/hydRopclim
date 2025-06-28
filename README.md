@@ -37,7 +37,7 @@ remotes::install_github("hydrocodes/hydRopclim")
 During the installation, please check in R console and skip other updates with an empty line or selecting option "None".
 
 That’s all! Finally, do not forget call the package in your script and if is necessary install and call other packages required in some functions. 
-Here a list of `hydRopclim` functions that work fine with the next packages:
+Here a list of `hydRopclim` functions that work fine* with the next packages:
 - For `indexcorrl()`: `reshape2`, `ggplot2`, `wesanderson`, `cowplot`
 - For `hydrocluster()`: `cluster`, `sp`, `terra`
 - For `rindex()`: `ggplot2`
@@ -50,6 +50,8 @@ rindex(data,a,l,p)
 ```
 Please, check tutorial folder for codelines examples and more details:
 https://github.com/hydrocodes/hydRopclim/tree/main/tutorial
+
+*Some systems require to change regional settings to English format.
 
 ## 4. Credits
 `hydRopclim` was developed by Pedro Rau at Water Research and Technology Center of Universidad de Ingenieria y Tecnologia (UTEC-CITA, Lima) 084-2018-108 FONDECYT-BM-IADT-MU PROCIENCIA. For any issue or suggestion please write to: pedro.rau.ing@gmail.com
