@@ -131,7 +131,7 @@ data <- lapply(1:ncell(rasterEP), function(i) {
 }
 
                     
-grad_spatial <- function(DEM, temp_stations, prec_stations, ccas,gradiente_temp,gradiente_pp) {
+spatial_grad <- function(DEM, temp_stations, prec_stations, ccas,gradiente_temp,gradiente_pp) {
   # preprocesamiento - datos 
   ## TEMPERATURA 
   temp_est <- t(temp_stations)
