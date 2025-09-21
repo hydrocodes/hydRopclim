@@ -27,6 +27,58 @@ valery_interpolation <- function(DEM ,sta_coor, sta_z, data ,
   return(raster)
 }
 
+valery_interpolation_NA_v2 <- function(DEM ,sta_coor, sta_z, data , 
+                                       p = 2 , Θ, var = 'pr'){
+  # DEMnl <- brick(brick(DEM),nl=nrow(sta_coor))
+  # DEMnl[] <- DEM[]
+  nDates <- nrow(data)
+  # ras_z <- DEM[]
+  
+  
+  # w <- brick(DEM,nl=nrow(sta_coor))
+  w <- t( sapply(1:nrow(sta_coor),function(i){
+    (1/distanceFromPoints(DEM,sta_coor[i,])^p)[]
+  })  )
+  # for (i in 1:nrow(sta_coor)){
+  #   w[[i]] <- 1/distanceFromPoints(DEM,sta_coor[i,])^p
+  # }
+  fac <- matrix(rep(DEM[],length(sta_z)),nrow=length(sta_z),byrow = T) - sta_z
+  if (var=='pr') fac <- exp(Θ*fac)
+  else if(var=='temp')   fac <- (Θ*fac)
+  
+  raster <- brick(brick(DEM),nl = nrow(data),values=T)
+  # brick(DEM,nl = nrow(data),values=T)
+  if (var=='pr'){
+    for (i in 1:nrow(data)){
+      ind <- which(!is.na(data[i,]))
+      Prcorr <- as.numeric(data[i,ind])*fac[ind,]
+      # Prcorr <- (as.numeric(data[i,ind])*exp(Θ*(DEMnl[[ind]]-sta_z[ind])))
+      # Sw <- sum(w[[ind]])
+      Sw <- colSums(w[ind,])
+      # raster[[i]] <- sum(w[[ind]]* Prcorr)/Sw
+      raster[[i]] <- colSums(w[ind,]* Prcorr)/Sw
+      
+      cat('avanzando ',round(i/nDates*100,2),'%    \r')   
+      # round(i/nDates*100,2)
+    }
+    
+  } else if (var=='temp'){
+    for (i in 1:nrow(data)){
+      ind <- which(!is.na(data[i,]))
+      # Tcorr <- (Θ*(DEMnl[[ind]]-sta_z[ind])+as.numeric(data[i,ind]))
+      Tcorr <- (fac[ind,]+as.numeric(data[i,ind]))
+      # Sw <- sum(w[[ind]])
+      Sw <- colSums(w[ind,])
+      # raster[[i]] <- sum(w[[ind]]* Tcorr)/Sw
+      raster[[i]] <- colSums(w[ind,]* Tcorr)/Sw
+      cat('avanzando ',round(i/nDates*100,2),'%   ',' \r') #,'i=',i
+      # round(i/nDates*100,2)
+      # format(round(i/nDates*100, 2), nsmall = 2)
+    }    
+  }
+  return(raster)
+}
+
 
 PE_oudin_ras_mon_v2 <- function(brick_tas,dates,cca = NULL,n_cores = 4){
   require(dplyr)
