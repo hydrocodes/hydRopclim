@@ -68,14 +68,13 @@ library(lubridate)
 library(zoo)
 setwd("C:/.../")
 source("https://raw.githubusercontent.com/hydrocodes/hydRopclim/main/tutorial/spatial_grad/interpolation.R")
-#data upload
 temp_stations <- read.csv('.../serie_tiempo_temp.csv')
 prec_stations <- read.csv('.../serie_tiempo_prc.csv')
 SRTM_0 <- raster('.../basin_90m.tif') #check dem_changes function below
-ccas <- read_sf("basin/basin.shp")[1] #shp
-grad_pr= 4*10^(-4)
-grad_temp =  -6.5/1000
-output <- ".../output_3basins.csv"
+ccas <- read_sf("basin/basin.shp") #read shp check column name where basin names are stored (e.g. ccas$NOMBRE). Assign different if necessary 
+grad_pr= 4*10^(-4) # precipitation gradient
+grad_temp =  -6.5/1000 # precipitation temperature
+output <- ".../output_3basins.csv" #output file
 
 ### A simple function for changing DEM m resolution to 0.1,0.25, 1, 5 or 10 km
 dem_changes <- function(DEM_DATA, res_srtm, res_resultados) {
