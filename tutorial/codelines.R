@@ -57,8 +57,9 @@ output <- "C:/.../output.csv"
 rindex(data=database7, a, l, p)
 
 library(hydRopclim)
-library(rgdal)
+library(terra)
 library(raster)
+library(sf)
 library(dplyr)
 library(airGR)
 library(parallel)
@@ -71,12 +72,10 @@ source("https://raw.githubusercontent.com/hydrocodes/hydRopclim/main/tutorial/sp
 temp_stations <- read.csv('.../serie_tiempo_temp.csv')
 prec_stations <- read.csv('.../serie_tiempo_prc.csv')
 SRTM_0 <- raster('.../basin_90m.tif') #check dem_changes function below
-ccas <- readOGR('.../basin.shp') #shp
+ccas <- read_sf("basin/basin.shp")[1] #shp
 grad_pr= 4*10^(-4)
 grad_temp =  -6.5/1000
 output <- ".../output_3basins.csv"
-path_graphs <- ".../output/"
-
 
 ### A simple function for changing DEM m resolution to 0.1,0.25, 1, 5 or 10 km
 dem_changes <- function(DEM_DATA, res_srtm, res_resultados) {
@@ -131,9 +130,9 @@ dem_changes <- function(DEM_DATA, res_srtm, res_resultados) {
 SRTM_0 <- dem_changes(SRTM_0, 90, 10) # here need to change the dem resolution and resolution that you want
 SRTM_0[SRTM_0[] < 0] <- 0
 names(SRTM_0) <- 'Elevation'
-ccas$NOMBRE <- 'Cuenca' #name of the basin (if you dont have "NOMBRE" or "NAME" in the .shp)
 
-grad_spatial(SRTM_0, temp_stations, prec_stations, ccas, grad_temp, grad_pr)
+spatial_grad(SRTM_0, temp_stations, prec_stations, ccas, grad_temp, grad_pr)
+
 
 library(hydRopclim)
 database10 <- read.csv("C:/.../data.csv")
