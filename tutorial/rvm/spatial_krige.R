@@ -35,4 +35,5 @@ spatial_krige <- function(data=p, shp=v)
   points(x,y, pch="+")
   plot(v, add=T)
   plot(ts.krg, type="l",ylab="Regionalized")
+  return(ts.krg)
 }
