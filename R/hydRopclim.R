@@ -148,7 +148,7 @@ indexcorrl <- function(index.seas, variable.seas, rwin, corr="pearson")
   }
  rcorr <- matrix(NA,(nrow(variable.seas)-rwin),ncol(variable.seas))
  for (i in 1:(nrow(variable.seas)-rwin)) {
-  rcorr[i,] <- cor(variable.seas[i:(i+rwin-1),],index.seas[i:(i+rwin-1)])
+  rcorr[i,] <- cor(variable.seas[i:(i+rwin-1),],index.seas[i:(i+rwin-1)], method=corr)
 }
 # Formatting new yearly dates
 data$Date <- as.POSIXct(paste("01", data$Date, sep = "-"), format = "%d-%b-%Y")
