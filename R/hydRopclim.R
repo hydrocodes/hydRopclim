@@ -133,11 +133,13 @@ legend("top",legend = c("Station", "Original grid", "Target elev"),
 #' @param index.seas A vector object: a yearly climate index
 #' @param variable.seas A matrix object: a yearly hydrological indexes
 #' @param rwin A numeric value: sliding window length in years
+#' @param corr A character value: name of the correlation method: "pearson" or "spearman"
 #' @return Running correlation, linear trend slopes, plots and 3 outputs files
 #' @examples indexcorrl(index.seas,variable.seas,rwin)
 #' @export
-indexcorrl <- function(index.seas, variable.seas, rwin)
-{ ptr <- length(index.seas)
+indexcorrl <- function(index.seas, variable.seas, rwin, corr="pearson")
+{ corr <- match.arg(tolower(corr), c("pearson", "spearman"))
+  ptr <- length(index.seas)
   ptnd <- nrow(variable.seas)
   if(ptr>ptnd){
     index.seas <- index.seas[-ptr]
@@ -162,14 +164,14 @@ rcorrplot <- rcorr[,order(ncol(rcorr):1)]
 cc <- vector("numeric", ncol(rcorrplot))
 slope <- vector("numeric", ncol(rcorrplot))
 for (i in 1:ncol(rcorr)) {
-  cc[i] <- cor(rcorr[,i], fechas)
+  cc[i] <- cor(rcorr[,i], fechas, method=corr)
   slope[i] <- cc[i]*sd(rcorr[,i])/sd(fechas)
 }
 slope
 df <- data.frame(rev(slope),1:ncol(rcorr))
 
 reord <- melt(rcorrplot)
-reord <- reord[reord$value!=0,]
+reord <- reord[!is.na(reord$value),]
 pal <- wes_palette("Zissou1", type = "continuous")
 p1 <- ggplot(reord, aes(x=factor(Var1), y=Var2, fill = value))+
   geom_tile()+
